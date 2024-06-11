@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ValueObjects\" />
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\Brand\" />
+    <None Remove="Services\" />
+    <None Remove="DTOs\Color\" />
+    <None Remove="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ValueObjects\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\Brand\" />
+    <Folder Include="Services\" />
+    <Folder Include="DTOs\Color\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+</Project>
