@@ -13,6 +13,8 @@
     <None Remove="Services\" />
     <None Remove="DTOs\Color\" />
     <None Remove="Exceptions\" />
+    <None Remove="DTOs\FuelType\" />
+    <None Remove="DTOs\Transmission\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ValueObjects\" />
@@ -21,5 +23,7 @@
     <Folder Include="Services\" />
     <Folder Include="DTOs\Color\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="DTOs\FuelType\" />
+    <Folder Include="DTOs\Transmission\" />
   </ItemGroup>
 </Project>

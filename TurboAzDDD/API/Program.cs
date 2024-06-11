@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
 using Application.Services;
 using Domain;
-using Domain.Repositories;
 using Domain.Services;
 using Infrastructure.Data.Context;
-using Infrastructure.Data.Repositories;
 using Infrastructure.Data.UnitOfWork;
+using Infrastructure.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +27,9 @@ builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load));
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
