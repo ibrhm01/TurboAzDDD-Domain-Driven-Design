@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.DTOs.FuelType
 {
 	public class CreateFuelTypeDto
 	{
-		public string FuelTypeName { get; set; } = null!;
+        [Required]
+        public string FuelTypeName { get; set; } = null!;
 	}
 }
 

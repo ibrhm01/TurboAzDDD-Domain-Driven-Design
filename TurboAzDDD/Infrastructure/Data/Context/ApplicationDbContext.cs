@@ -17,8 +17,6 @@ namespace Infrastructure.Data.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Market> Markets { get; set; }
         public DbSet<Model> Models { get; set; }
-        public DbSet<NumberOfOwner> NumberOfOwners { get; set; }
-        public DbSet<NumberOfSeat> NumberOfSeats { get; set; }
         public DbSet<Salon> Salons { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagVehicle> TagVehicles { get; set; }

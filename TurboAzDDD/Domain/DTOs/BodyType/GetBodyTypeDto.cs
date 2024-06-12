@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.DTOs.BodyType
 {
 	public class GetBodyTypeDto

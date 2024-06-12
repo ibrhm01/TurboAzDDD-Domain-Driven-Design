@@ -37,6 +37,22 @@ namespace Infrastructure.Data.UnitOfWork
 
         public IBodyTypeRepository BodyTypeRepository => _bodyTypeRepository ??= new BodyTypeRepository(_appDbContext);
 
+        public ISalonRepository? _salonRepository;
+
+        public ISalonRepository SalonRepository => _salonRepository ??= new SalonRepository(_appDbContext);
+
+        public IMarketRepository? _marketRepository;
+
+        public IMarketRepository MarketRepository => _marketRepository ??= new MarketRepository(_appDbContext);
+
+        public IDriveTypeRepository? _driveTypeRepository;
+
+        public IDriveTypeRepository DriveTypeRepository => _driveTypeRepository ??= new DriveTypeRepository(_appDbContext);
+
+        public IModelRepository? _modelRepository;
+
+        public IModelRepository ModelRepository => _modelRepository ??= new ModelRepository(_appDbContext);
+
         public int Complete()
         {
             return _appDbContext.SaveChanges();

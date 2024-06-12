@@ -16,13 +16,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c=>
+{
+    //c.SchemaFilter<SwaggerRequiredSchemaFilter>();
+
+});
 
 //builder.Services.AddScoped<IVehicleService, VehicleService>();
 //builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IColorService, ColorService>();
+builder.Services.AddScoped<ISalonService, SalonService>();
+builder.Services.AddScoped<IMarketService, MarketService>();
+builder.Services.AddScoped<IModelService, ModelService>();
+builder.Services.AddScoped<IDriveTypeService, DriveTypeService>();
 builder.Services.AddScoped<IBodyTypeService, BodyTypeService>();
 builder.Services.AddScoped<IFuelTypeService, FuelTypeService>();
 builder.Services.AddScoped<ITransmissionService, TransmissionService>();

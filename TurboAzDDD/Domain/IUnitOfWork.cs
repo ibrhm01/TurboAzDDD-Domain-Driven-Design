@@ -10,6 +10,10 @@ namespace Domain
         public IFuelTypeRepository FuelTypeRepository { get; }
         public ITransmissionRepository TransmissionRepository { get; }
         public IBodyTypeRepository BodyTypeRepository { get; }
+        public ISalonRepository SalonRepository { get; }
+        public IMarketRepository MarketRepository { get; }
+        public IDriveTypeRepository DriveTypeRepository { get; }
+        public IModelRepository ModelRepository { get; }
         int Complete();
         Task<int> CompleteAsync();
     }

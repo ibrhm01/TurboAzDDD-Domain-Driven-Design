@@ -16,6 +16,11 @@
     <None Remove="DTOs\FuelType\" />
     <None Remove="DTOs\Transmission\" />
     <None Remove="DTOs\BodyType\" />
+    <None Remove="DTOs\Salon\" />
+    <None Remove="DTOs\Market\" />
+    <None Remove="DTOs\DriveType\" />
+    <None Remove="ENUMs\" />
+    <None Remove="DTOs\Model\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ValueObjects\" />
@@ -27,5 +32,10 @@
     <Folder Include="DTOs\FuelType\" />
     <Folder Include="DTOs\Transmission\" />
     <Folder Include="DTOs\BodyType\" />
+    <Folder Include="DTOs\Salon\" />
+    <Folder Include="DTOs\Market\" />
+    <Folder Include="DTOs\DriveType\" />
+    <Folder Include="ENUMs\" />
+    <Folder Include="DTOs\Model\" />
   </ItemGroup>
 </Project>

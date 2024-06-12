@@ -31,7 +31,7 @@ namespace Infrastructure.Data.Repositories
             return await _appDbContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _appDbContext.Set<T>().ToListAsync();
         }
@@ -41,7 +41,7 @@ namespace Infrastructure.Data.Repositories
             return await _appDbContext.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             return await _appDbContext.Set<T>().FindAsync(id);
 
