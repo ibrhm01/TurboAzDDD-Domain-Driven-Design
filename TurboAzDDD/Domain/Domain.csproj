@@ -15,6 +15,7 @@
     <None Remove="Exceptions\" />
     <None Remove="DTOs\FuelType\" />
     <None Remove="DTOs\Transmission\" />
+    <None Remove="DTOs\BodyType\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ValueObjects\" />
@@ -25,5 +26,6 @@
     <Folder Include="Exceptions\" />
     <Folder Include="DTOs\FuelType\" />
     <Folder Include="DTOs\Transmission\" />
+    <Folder Include="DTOs\BodyType\" />
   </ItemGroup>
 </Project>

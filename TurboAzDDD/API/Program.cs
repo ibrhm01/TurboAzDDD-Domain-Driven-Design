@@ -23,6 +23,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IColorService, ColorService>();
+builder.Services.AddScoped<IBodyTypeService, BodyTypeService>();
+builder.Services.AddScoped<IFuelTypeService, FuelTypeService>();
+builder.Services.AddScoped<ITransmissionService, TransmissionService>();
+
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load));
 

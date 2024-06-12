@@ -9,6 +9,7 @@ namespace Domain
         public IColorRepository ColorRepository { get; }
         public IFuelTypeRepository FuelTypeRepository { get; }
         public ITransmissionRepository TransmissionRepository { get; }
+        public IBodyTypeRepository BodyTypeRepository { get; }
         int Complete();
         Task<int> CompleteAsync();
     }

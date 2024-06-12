@@ -33,6 +33,10 @@ namespace Infrastructure.Data.UnitOfWork
 
         public ITransmissionRepository TransmissionRepository => _transmissionRepository ??= new TransmissionRepository(_appDbContext);
 
+        public IBodyTypeRepository? _bodyTypeRepository;
+
+        public IBodyTypeRepository BodyTypeRepository => _bodyTypeRepository ??= new BodyTypeRepository(_appDbContext);
+
         public int Complete()
         {
             return _appDbContext.SaveChanges();
