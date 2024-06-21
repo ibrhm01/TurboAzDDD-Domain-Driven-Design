@@ -45,7 +45,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateDriveTypeDto updateDto)
         {
-            Domain.Entities.DriveType? driveType = await _unitOfWork.DriveTypeRepository.GetByIdAsync(id);
+            Domain.Entities.DriveType? driveType = await _unitOfWork.DriveTypeRepository.GetByIdAsyncForAll(id);
 
 
             if (driveType is null) throw new EntityNotFoundException("There is no such DriveType");

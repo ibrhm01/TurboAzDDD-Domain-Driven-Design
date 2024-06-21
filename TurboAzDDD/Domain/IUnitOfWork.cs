@@ -14,6 +14,9 @@ namespace Domain
         public IMarketRepository MarketRepository { get; }
         public IDriveTypeRepository DriveTypeRepository { get; }
         public IModelRepository ModelRepository { get; }
+        public ITagRepository TagRepository { get; }
+        public IImageRepository ImageRepository { get; }
+
         int Complete();
         Task<int> CompleteAsync();
     }

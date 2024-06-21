@@ -48,7 +48,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateTransmissionDto updateDto)
         {
-            Transmission? transmission = await _unitOfWork.TransmissionRepository.GetByIdAsync(id);
+            Transmission? transmission = await _unitOfWork.TransmissionRepository.GetByIdAsyncForAll(id);
 
 
             if (transmission is null) throw new EntityNotFoundException("There is no such Transmission");

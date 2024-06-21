@@ -46,7 +46,7 @@ namespace Application.Services
 
             public async Task<int> UpdateAsync(int id, UpdateBodyTypeDto updateDto)
             {
-                BodyType? bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsync(id);
+                BodyType? bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsyncForAll(id);
 
 
                 if (bodyType is null) throw new EntityNotFoundException("There is no such BodyType");

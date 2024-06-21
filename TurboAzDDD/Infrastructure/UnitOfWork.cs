@@ -53,6 +53,15 @@ namespace Infrastructure.Data.UnitOfWork
 
         public IModelRepository ModelRepository => _modelRepository ??= new ModelRepository(_appDbContext);
 
+        public ITagRepository? _tagRepository;
+
+        public ITagRepository TagRepository => _tagRepository ??= new TagRepository(_appDbContext);
+
+        public IImageRepository? _imageRepository;
+
+        public IImageRepository ImageRepository => _imageRepository ??= new ImageRepository(_appDbContext);
+
+
         public int Complete()
         {
             return _appDbContext.SaveChanges();

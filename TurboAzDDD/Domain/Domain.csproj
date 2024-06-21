@@ -21,6 +21,9 @@
     <None Remove="DTOs\DriveType\" />
     <None Remove="ENUMs\" />
     <None Remove="DTOs\Model\" />
+    <None Remove="DTOs\Vehicle\" />
+    <None Remove="DTOs\Tag\" />
+    <None Remove="DTOs\Image\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ValueObjects\" />
@@ -37,5 +40,12 @@
     <Folder Include="DTOs\DriveType\" />
     <Folder Include="ENUMs\" />
     <Folder Include="DTOs\Model\" />
+    <Folder Include="DTOs\Vehicle\" />
+    <Folder Include="DTOs\Tag\" />
+    <Folder Include="DTOs\Image\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />
   </ItemGroup>
 </Project>

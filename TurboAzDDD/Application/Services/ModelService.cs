@@ -37,20 +37,24 @@ namespace Application.Services
         public async Task<int> CreateAsync(CreateModelDto createDto)
         {
 
-            if (await _unitOfWork.ModelRepository.IsExistAsync(b => b.ModelName.Trim() == createDto.ModelName.Trim()))
-                throw new DuplicateNameException("There is already a Model with this name");
+            if (await _unitOfWork.BrandRepository.IsExistAsync(b => b.Id == createDto.BrandId))
+            {
+                if (await _unitOfWork.ModelRepository.IsExistAsync(b => b.ModelName.Trim() == createDto.ModelName.Trim()))
+                    throw new DuplicateNameException("There is already a Model with this name");
 
-            var mapped = _mapper.Map<Model>(createDto);
+                var mapped = _mapper.Map<Model>(createDto);
 
-            await _unitOfWork.ModelRepository.CreateAsync(mapped);
+                await _unitOfWork.ModelRepository.CreateAsync(mapped);
 
-            return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync();
 
+            }
+            else throw new EntityNotFoundException("There is no such Brand with this ID");
         }
 
         public async Task<int> UpdateAsync(int id, UpdateModelDto updateDto)
         {
-            Model? model = await _unitOfWork.ModelRepository.GetByIdAsync(id);
+            Model? model = await _unitOfWork.ModelRepository.GetByIdAsyncForAll(id);
 
 
             if (model is null) throw new EntityNotFoundException("There is no such Model");

@@ -3,8 +3,8 @@ namespace Domain.Entities
 {
 	public class Transmission : BaseEntity
     {
-		public string? TransmissionName { get; set; }
-        public List<Vehicle>? Vehicles { get; set; }
-	}
+		public string TransmissionName { get; set; } = null!;
+        public List<Vehicle>? Vehicles { get; set; } 
+    }
 }
 

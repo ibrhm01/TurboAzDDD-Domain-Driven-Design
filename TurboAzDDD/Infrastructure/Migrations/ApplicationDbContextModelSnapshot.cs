@@ -31,6 +31,7 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BodyTypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -76,6 +77,7 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ColorName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -98,21 +100,25 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VehicleId")
@@ -135,6 +141,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DriveTypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -157,6 +164,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FuelTypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -179,6 +187,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -209,6 +218,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MarketName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -234,6 +244,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ModelName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -252,6 +263,7 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -261,9 +273,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SalonDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SalonName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -286,6 +300,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TagName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -337,6 +352,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TransmissionName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -355,9 +371,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("BodyTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
@@ -370,34 +383,40 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DriveTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EngineDisplacement")
+                        .HasColumnType("int");
+
                     b.Property<int>("FuelTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsBarterPossible")
+                    b.Property<bool?>("IsBarterPossible")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsBroken")
+                    b.Property<bool?>("IsBroken")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsColored")
+                    b.Property<bool?>("IsColored")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDamaged")
+                    b.Property<bool?>("IsDamaged")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MarketId")
+                    b.Property<int?>("MarketId")
                         .HasColumnType("int");
 
                     b.Property<double>("Mileage")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ModelId")
+                    b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberOfOwners")
+                    b.Property<int?>("NumberOfOwners")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumberOfSeats")
                         .HasColumnType("int");
 
                     b.Property<int>("PowerOutput")
@@ -406,16 +425,16 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("SalonId")
+                    b.Property<int?>("SalonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransmissionId")
+                    b.Property<int?>("TransmissionId")
                         .HasColumnType("int");
 
                     b.Property<string>("VinCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("WithCredit")
+                    b.Property<bool?>("WithCredit")
                         .HasColumnType("bit");
 
                     b.Property<int>("YearOfManufacture")
@@ -424,8 +443,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BodyTypeId");
-
-                    b.HasIndex("BrandId");
 
                     b.HasIndex("ColorId");
 
@@ -493,12 +510,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany("Vehicles")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Color", "Color")
                         .WithMany("Vehicles")
                         .HasForeignKey("ColorId")
@@ -519,29 +530,23 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Market", "Market")
                         .WithMany("Vehicles")
-                        .HasForeignKey("MarketId")
+                        .HasForeignKey("MarketId");
+
+                    b.HasOne("Domain.Entities.Model", "Model")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.Model", null)
-                        .WithMany("Vehicles")
-                        .HasForeignKey("ModelId");
 
                     b.HasOne("Domain.Entities.Salon", "Salon")
                         .WithMany("Vehicles")
-                        .HasForeignKey("SalonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalonId");
 
                     b.HasOne("Domain.Entities.Transmission", "Transmission")
                         .WithMany("Vehicles")
-                        .HasForeignKey("TransmissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransmissionId");
 
                     b.Navigation("BodyType");
-
-                    b.Navigation("Brand");
 
                     b.Navigation("Color");
 
@@ -550,6 +555,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("FuelType");
 
                     b.Navigation("Market");
+
+                    b.Navigation("Model");
 
                     b.Navigation("Salon");
 
@@ -564,8 +571,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Brand", b =>
                 {
                     b.Navigation("Models");
-
-                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("Domain.Entities.Color", b =>

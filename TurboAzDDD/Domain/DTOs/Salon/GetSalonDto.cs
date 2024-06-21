@@ -8,6 +8,7 @@ namespace Domain.DTOs.Salon
         public string Address { get; set; } = null!;
         public bool IsDeleted { get; set; }
         public DateTime CreatedDate { get; set; }
+        //public IEnumerable<Entities.Vehicle> Vehicles { get; set; } = null!;
     }
 }
 

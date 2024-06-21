@@ -14,13 +14,13 @@ namespace Infrastructure.Data.Repositories
             _appDbContext = appDbContext;
         }
 
-        public override async Task<IEnumerable<BodyType>> GetAllAsync()
+        public override async Task<List<BodyType>> GetAllAsync()
         {
-            return await _appDbContext.Set<BodyType>().Include(b => b.Vehicles).ToListAsync();
+            return await _appDbContext.Set<BodyType>().Where(b => !b.IsDeleted).Include(b => b.Vehicles).ToListAsync();
         }
         public override async Task<BodyType?> GetByIdAsync(int id)
         {
-            return await _appDbContext.Set<BodyType>().Include(b => b.Vehicles).FirstOrDefaultAsync(x => x.Id == id);
+            return await _appDbContext.Set<BodyType>().Where(b => !b.IsDeleted).Include(b => b.Vehicles).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateColorDto updateDto)
         {
-            Color? color = await _unitOfWork.ColorRepository.GetByIdAsync(id);
+            Color? color = await _unitOfWork.ColorRepository.GetByIdAsyncForAll(id);
 
 
             if (color is null) throw new EntityNotFoundException("There is no such Color");

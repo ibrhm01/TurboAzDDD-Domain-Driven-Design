@@ -50,7 +50,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateMarketDto updateDto)
         {
-            Market? market = await _unitOfWork.MarketRepository.GetByIdAsync(id);
+            Market? market = await _unitOfWork.MarketRepository.GetByIdAsyncForAll(id);
 
 
             if (market is null) throw new EntityNotFoundException("There is no such Market");

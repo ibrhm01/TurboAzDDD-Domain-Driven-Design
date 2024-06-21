@@ -2,10 +2,10 @@
 {
 	public class Salon: BaseEntity
 	{
-		public string? SalonName { get; set; }
-        public string? SalonDescription { get; set; }
-        public string? Address { get; set; }
-		public List<Vehicle>? Vehicles { get; set; }
-	}
+		public string SalonName { get; set; } = null!;
+        public string SalonDescription { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public List<Vehicle>? Vehicles { get; set; } 
+    }
 }
 

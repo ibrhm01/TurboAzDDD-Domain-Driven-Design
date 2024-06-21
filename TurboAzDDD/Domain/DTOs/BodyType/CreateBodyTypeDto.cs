@@ -7,7 +7,6 @@ namespace Domain.DTOs.BodyType
 	{
         [Required]
         public string BodyTypeName { get; set; } = null!;
-       
     }
 }
 

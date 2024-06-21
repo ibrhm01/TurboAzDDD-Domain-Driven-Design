@@ -49,7 +49,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateBrandDto updateDto)
         {
-            Brand? brand = await _unitOfWork.BrandRepository.GetByIdAsync(id);
+            Brand? brand = await _unitOfWork.BrandRepository.GetByIdAsyncForAll(id);
 
 
             if (brand is null) throw new EntityNotFoundException("There is no such Brand");
@@ -91,7 +91,9 @@ namespace Application.Services
         {
 
             var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Brand");
+
             await _unitOfWork.BrandRepository.DeleteAsync(brand);
+
             return await _unitOfWork.CompleteAsync();
 
         }

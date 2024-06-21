@@ -6,6 +6,7 @@ namespace Domain.DTOs.Market
         public string MarketName { get; set; } = null!;
         public bool IsDeleted { get; set; }
         public DateTime CreatedDate { get; set; }
+        //public IEnumerable<Entities.Vehicle> Vehicles { get; set; } = null!;
     }
 }
 

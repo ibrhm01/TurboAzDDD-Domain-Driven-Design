@@ -7,6 +7,7 @@ namespace Domain.DTOs.Model
         public bool IsDeleted { get; set; }
         public int BrandId { get; set; }
         public DateTime CreatedDate { get; set; }
+        //public IEnumerable<Entities.Vehicle> Vehicles { get; set; } = null!;
     }
 }
 

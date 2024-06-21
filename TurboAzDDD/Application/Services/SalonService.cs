@@ -50,7 +50,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateSalonDto updateDto)
         {
-            Salon? salon = await _unitOfWork.SalonRepository.GetByIdAsync(id);
+            Salon? salon = await _unitOfWork.SalonRepository.GetByIdAsyncForAll(id);
 
 
             if (salon is null) throw new EntityNotFoundException("There is no such Salon");

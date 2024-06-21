@@ -47,7 +47,7 @@ namespace Application.Services
 
         public async Task<int> UpdateAsync(int id, UpdateFuelTypeDto updateDto)
         {
-            FuelType? fuelType = await _unitOfWork.FuelTypeRepository.GetByIdAsync(id);
+            FuelType? fuelType = await _unitOfWork.FuelTypeRepository.GetByIdAsyncForAll(id);
 
 
             if (fuelType is null) throw new EntityNotFoundException("There is no such FuelType");

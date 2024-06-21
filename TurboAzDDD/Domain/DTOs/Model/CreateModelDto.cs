@@ -1,10 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.DTOs.Model
 {
 	public class CreateModelDto
 	{
+        [Required]
         public string ModelName { get; set; } = null!;
-        public string? BrandName { get; set; }
+        [Required]
+        public int BrandId { get; set; }
 
     }
 }

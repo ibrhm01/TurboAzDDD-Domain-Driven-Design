@@ -4,10 +4,13 @@ using Domain.DTOs.Brand;
 using Domain.DTOs.Color;
 using Domain.DTOs.DriveType;
 using Domain.DTOs.FuelType;
+using Domain.DTOs.Image;
 using Domain.DTOs.Market;
 using Domain.DTOs.Model;
 using Domain.DTOs.Salon;
+using Domain.DTOs.Tag;
 using Domain.DTOs.Transmission;
+using Domain.DTOs.Vehicle;
 using Domain.Entities;
 
 namespace Infrastructure.Mapper
@@ -16,7 +19,13 @@ namespace Infrastructure.Mapper
 	{
 		public MappingProfile()
 		{
-			CreateMap<CreateBrandDto, Brand>()
+            CreateMap<CreateVehicleDto, Vehicle>()
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            CreateMap<UpdateVehicleDto, Vehicle>();
+            CreateMap<Vehicle, GetVehicleDto>();
+
+            CreateMap<CreateBrandDto, Brand>()
 				.ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
 				.ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
 			CreateMap<UpdateBrandDto, Brand>();
@@ -69,6 +78,18 @@ namespace Infrastructure.Mapper
                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
             CreateMap<UpdateModelDto, Model>();
             CreateMap<Model, GetModelDto>();
+
+            CreateMap<CreateImageDto, Image>()
+              .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+              .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            CreateMap<UpdateImageDto, Image>();
+            CreateMap<Image, GetImageDto>();
+
+            CreateMap<CreateTagDto, Tag>()
+              .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+              .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            CreateMap<UpdateTagDto, Tag>();
+            CreateMap<Tag, GetTagDto>();
 
         }
 	}
