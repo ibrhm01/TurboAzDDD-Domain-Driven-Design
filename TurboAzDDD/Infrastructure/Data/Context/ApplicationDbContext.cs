@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Domain.ENUMs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +31,31 @@ namespace Infrastructure.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            List<IdentityRole> roles = new()
+            {
+                new IdentityRole
+                {
+                    Name = Role.Member.ToString(),
+                    NormalizedName = Role.Member.ToString().ToUpper()
+
+                },
+
+                new IdentityRole
+                {
+                    Name = Role.Admin.ToString(),
+                    NormalizedName = Role.Admin.ToString().ToUpper()
+
+                },
+
+                new IdentityRole
+                {
+                    Name = Role.SuperAdmin.ToString(),
+                    NormalizedName = Role.SuperAdmin.ToString().ToUpper()
+
+                }
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
 
             //modelBuilder.Entity<Vehicle>()
             //    .Property(b => b.CreatedDate)

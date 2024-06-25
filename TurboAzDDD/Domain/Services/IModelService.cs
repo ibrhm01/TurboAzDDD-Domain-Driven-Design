@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateModelDto createModelDto);
         Task<int> UpdateAsync(int id, UpdateModelDto updateModelDto);
-        Task<IEnumerable<GetModelDto>> GetAllAsync();
+        Task<List<GetModelDto>> GetAllAsync();
         Task<GetModelDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

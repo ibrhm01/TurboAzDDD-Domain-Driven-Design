@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateTransmissionDto createTransmissionDto);
         Task<int> UpdateAsync(int id, UpdateTransmissionDto updateTransmissionDto);
-        Task<IEnumerable<GetTransmissionDto>> GetAllAsync();
+        Task<List<GetTransmissionDto>> GetAllAsync();
         Task<GetTransmissionDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

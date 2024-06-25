@@ -66,11 +66,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetBrandDto>> GetAllAsync()
+        public async Task<List<GetBrandDto>> GetAllAsync()
         {
             List<GetBrandDto> getBrandDtos = new();
 
-            IEnumerable<Brand> brands = await _unitOfWork.BrandRepository.GetAllAsync();
+            List<Brand> brands = await _unitOfWork.BrandRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(brands, getBrandDtos);

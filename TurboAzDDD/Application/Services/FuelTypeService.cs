@@ -64,11 +64,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetFuelTypeDto>> GetAllAsync()
+        public async Task<List<GetFuelTypeDto>> GetAllAsync()
         {
             List<GetFuelTypeDto> getFuelTypeDtos = new();
 
-            IEnumerable<FuelType> fuelTypes = await _unitOfWork.FuelTypeRepository.GetAllAsync();
+            List<FuelType> fuelTypes = await _unitOfWork.FuelTypeRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(fuelTypes, getFuelTypeDtos);

@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateBodyTypeDto createBodyTypeDto);
         Task<int> UpdateAsync(int id, UpdateBodyTypeDto updateBodyTypeDto);
-        Task<IEnumerable<GetBodyTypeDto>> GetAllAsync();
+        Task<List<GetBodyTypeDto>> GetAllAsync();
         Task<GetBodyTypeDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

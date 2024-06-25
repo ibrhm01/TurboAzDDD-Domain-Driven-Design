@@ -67,11 +67,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetMarketDto>> GetAllAsync()
+        public async Task<List<GetMarketDto>> GetAllAsync()
         {
             List<GetMarketDto> getMarketDtos = new();
 
-            IEnumerable<Market> markets = await _unitOfWork.MarketRepository.GetAllAsync();
+            List<Market> markets = await _unitOfWork.MarketRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(markets, getMarketDtos);

@@ -10,6 +10,7 @@ using Domain.DTOs.Model;
 using Domain.DTOs.Salon;
 using Domain.DTOs.Tag;
 using Domain.DTOs.Transmission;
+using Domain.DTOs.User;
 using Domain.DTOs.Vehicle;
 using Domain.Entities;
 
@@ -90,6 +91,10 @@ namespace Infrastructure.Mapper
               .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
             CreateMap<UpdateTagDto, Tag>();
             CreateMap<Tag, GetTagDto>();
+
+            CreateMap<RegisterDto, AppUser>();
+              //.ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            CreateMap<AppUser, GetUserDto>();
 
         }
 	}

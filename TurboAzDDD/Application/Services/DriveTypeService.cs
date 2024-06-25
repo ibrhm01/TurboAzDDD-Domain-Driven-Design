@@ -62,11 +62,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetDriveTypeDto>> GetAllAsync()
+        public async Task<List<GetDriveTypeDto>> GetAllAsync()
         {
             List<GetDriveTypeDto> getDriveTypeDtos = new();
 
-            IEnumerable<Domain.Entities.DriveType> driveTypes = await _unitOfWork.DriveTypeRepository.GetAllAsync();
+            List<Domain.Entities.DriveType> driveTypes = await _unitOfWork.DriveTypeRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(driveTypes, getDriveTypeDtos);

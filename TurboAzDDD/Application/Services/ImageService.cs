@@ -84,11 +84,11 @@ namespace Application.Services
             else throw new EntityNotFoundException("There is no such Vehicle with this ID");
         }
 
-        public async Task<IEnumerable<GetImageDto>> GetAllAsync()
+        public async Task<List<GetImageDto>> GetAllAsync()
         {
             List<GetImageDto> getImageDtos = new();
 
-            IEnumerable<Image> images = await _unitOfWork.ImageRepository.GetAllAsync();
+            List<Image> images = await _unitOfWork.ImageRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(images, getImageDtos);

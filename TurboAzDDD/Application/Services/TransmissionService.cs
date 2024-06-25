@@ -65,11 +65,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetTransmissionDto>> GetAllAsync()
+        public async Task<List<GetTransmissionDto>> GetAllAsync()
         {
             List<GetTransmissionDto> getTransmissionDtos = new();
 
-            IEnumerable<Transmission> transmissions = await _unitOfWork.TransmissionRepository.GetAllAsync();
+            List<Transmission> transmissions = await _unitOfWork.TransmissionRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(transmissions, getTransmissionDtos);

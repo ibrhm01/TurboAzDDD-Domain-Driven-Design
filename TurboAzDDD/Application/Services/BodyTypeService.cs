@@ -63,11 +63,11 @@ namespace Application.Services
 
             }
 
-            public async Task<IEnumerable<GetBodyTypeDto>> GetAllAsync()
+            public async Task<List<GetBodyTypeDto>> GetAllAsync()
             {
                 List<GetBodyTypeDto> getBodyTypeDtos = new();
 
-                IEnumerable<BodyType> bodyTypes = await _unitOfWork.BodyTypeRepository.GetAllAsync();
+                List<BodyType> bodyTypes = await _unitOfWork.BodyTypeRepository.GetAllAsync();
 
 
                 var mapped = _mapper.Map(bodyTypes, getBodyTypeDtos);

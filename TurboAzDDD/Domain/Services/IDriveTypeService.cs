@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateDriveTypeDto createDriveTypeDto);
         Task<int> UpdateAsync(int id, UpdateDriveTypeDto updateDriveTypeDto);
-        Task<IEnumerable<GetDriveTypeDto>> GetAllAsync();
+        Task<List<GetDriveTypeDto>> GetAllAsync();
         Task<GetDriveTypeDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

@@ -43,6 +43,7 @@
     <Folder Include="DTOs\Vehicle\" />
     <Folder Include="DTOs\Tag\" />
     <Folder Include="DTOs\Image\" />
+    <Folder Include="DTOs\User\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />

@@ -67,11 +67,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetSalonDto>> GetAllAsync()
+        public async Task<List<GetSalonDto>> GetAllAsync()
         {
             List<GetSalonDto> getSalonDtos = new();
 
-            IEnumerable<Salon> salons = await _unitOfWork.SalonRepository.GetAllAsync();
+            List<Salon> salons = await _unitOfWork.SalonRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(salons, getSalonDtos);

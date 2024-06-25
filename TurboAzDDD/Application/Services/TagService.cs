@@ -88,11 +88,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetTagDto>> GetAllAsync()
+        public async Task<List<GetTagDto>> GetAllAsync()
         {
             List<GetTagDto> getTagDtos = new();
 
-            IEnumerable<Tag> tags = await _unitOfWork.TagRepository.GetAllAsync();
+            List<Tag> tags = await _unitOfWork.TagRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(tags, getTagDtos);

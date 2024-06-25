@@ -15,7 +15,7 @@ namespace Domain.Services
         /// <returns></returns>
         Task<int> CreateAsync(CreateBrandDto createBrandDto);
         Task<int> UpdateAsync(int id, UpdateBrandDto updateBrandDto);
-        Task<IEnumerable<GetBrandDto>> GetAllAsync();
+        Task<List<GetBrandDto>> GetAllAsync();
         Task<GetBrandDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
 

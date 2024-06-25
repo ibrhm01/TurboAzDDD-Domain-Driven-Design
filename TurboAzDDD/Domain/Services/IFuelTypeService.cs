@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateFuelTypeDto createFuelTypeDto);
         Task<int> UpdateAsync(int id, UpdateFuelTypeDto updateFuelTypeDto);
-        Task<IEnumerable<GetFuelTypeDto>> GetAllAsync();
+        Task<List<GetFuelTypeDto>> GetAllAsync();
         Task<GetFuelTypeDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

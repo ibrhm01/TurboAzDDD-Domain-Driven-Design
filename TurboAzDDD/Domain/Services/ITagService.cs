@@ -6,7 +6,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateTagDto createTagDto);
         Task<int> UpdateAsync(int id, UpdateTagDto updateTagDto);
-        Task<IEnumerable<GetTagDto>> GetAllAsync();
+        Task<List<GetTagDto>> GetAllAsync();
         Task<GetTagDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }

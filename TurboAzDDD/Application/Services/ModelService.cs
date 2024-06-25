@@ -71,11 +71,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetModelDto>> GetAllAsync()
+        public async Task<List<GetModelDto>> GetAllAsync()
         {
             List<GetModelDto> getModelDtos = new();
 
-            IEnumerable<Model> models = await _unitOfWork.ModelRepository.GetAllAsync();
+            List<Model> models = await _unitOfWork.ModelRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(models, getModelDtos);

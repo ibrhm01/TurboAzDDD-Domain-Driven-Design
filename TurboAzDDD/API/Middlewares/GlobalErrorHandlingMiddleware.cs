@@ -44,6 +44,60 @@ namespace Infrastructure.Middlewares
                 var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
                 await context.Response.WriteAsync(jsonErrorResponse);
             }
+            catch (ExistedUserException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
+            catch (FileIsNotImageException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
+            catch (FileSizeException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
+            catch (NotValidArgumentValueException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
+            catch (UserNotFoundException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
+            catch (RoleAddException e)
+            {
+                _logger.LogError(e, e.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ErrorResponse { Message = e.Message };
+                var jsonErrorResponse = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(jsonErrorResponse);
+            }
         }
     }
 }

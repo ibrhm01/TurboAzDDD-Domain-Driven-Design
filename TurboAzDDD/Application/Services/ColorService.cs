@@ -64,11 +64,11 @@ namespace Application.Services
 
         }
 
-        public async Task<IEnumerable<GetColorDto>> GetAllAsync()
+        public async Task<List<GetColorDto>> GetAllAsync()
         {
             List<GetColorDto> getColorDtos = new();
 
-            IEnumerable<Color> colors = await _unitOfWork.ColorRepository.GetAllAsync();
+            List<Color> colors = await _unitOfWork.ColorRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(colors, getColorDtos);

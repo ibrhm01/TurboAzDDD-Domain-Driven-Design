@@ -178,11 +178,11 @@ namespace Application.Services
             return result;
         }
 
-        public async Task<IEnumerable<GetVehicleDto>> GetAllAsync()
+        public async Task<List<GetVehicleDto>> GetAllAsync()
         {
             List<GetVehicleDto> getVehicleDtos = new();
 
-            IEnumerable<Vehicle> vehicles = await _unitOfWork.VehicleRepository.GetAllAsync();
+            List<Vehicle> vehicles = await _unitOfWork.VehicleRepository.GetAllAsync();
 
 
             var mapped = _mapper.Map(vehicles, getVehicleDtos);
@@ -208,7 +208,7 @@ namespace Application.Services
 
         }
 
-        public IEnumerable<GetVehicleDto> GetAllFilteredAsync(GetAllFilteredVehiclesDto getAllFilteredVehiclesDto)
+        public List<GetVehicleDto> GetAllFilteredAsync(GetAllFilteredVehiclesDto getAllFilteredVehiclesDto)
         {
             List<GetVehicleDto> getVehicleDtos = new();
             IQueryable<Vehicle> vehicles =  _unitOfWork.VehicleRepository.GetAllQueryable();

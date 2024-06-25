@@ -7,7 +7,7 @@ namespace Domain.Services
 	{
         Task<int> CreateAsync(CreateMarketDto createMarketDto);
         Task<int> UpdateAsync(int id, UpdateMarketDto updateMarketDto);
-        Task<IEnumerable<GetMarketDto>> GetAllAsync();
+        Task<List<GetMarketDto>> GetAllAsync();
         Task<GetMarketDto> GetOneAsync(int id);
         Task<int> DeleteAsync(int id);
     }
