@@ -5,11 +5,11 @@ namespace Domain.Services
 {
 	public interface ITransmissionService
 	{
-        Task<int> CreateAsync(CreateTransmissionDto createTransmissionDto);
-        Task<int> UpdateAsync(int id, UpdateTransmissionDto updateTransmissionDto);
+        Task<bool> CreateAsync(CreateTransmissionDto createTransmissionDto);
+        Task<bool> UpdateAsync(int id, UpdateTransmissionDto updateTransmissionDto);
         Task<List<GetTransmissionDto>> GetAllAsync();
         Task<GetTransmissionDto> GetOneAsync(int id);
-        Task<int> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }
 

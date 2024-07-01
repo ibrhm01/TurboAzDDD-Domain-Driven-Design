@@ -30,8 +30,6 @@
     <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Fixtures\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>

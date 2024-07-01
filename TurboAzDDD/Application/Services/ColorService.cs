@@ -30,7 +30,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateColorDto createDto)
+        public async Task<bool> CreateAsync(CreateColorDto createDto)
         {
             if (await _unitOfWork.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == createDto.ColorName.Trim()))
                 throw new DuplicateNameException("There is already a Color with this name");
@@ -39,11 +39,11 @@ namespace Application.Services
 
             await _unitOfWork.ColorRepository.CreateAsync(mapped);
 
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateColorDto updateDto)
+        public async Task<bool> UpdateAsync(int id, UpdateColorDto updateDto)
         {
             Color? color = await _unitOfWork.ColorRepository.GetByIdAsyncForAll(id);
 
@@ -57,7 +57,7 @@ namespace Application.Services
             {
                 var mapped = _mapper.Map(updateDto, color);
                 await _unitOfWork.ColorRepository.UpdateAsync(mapped);
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
             }
 
         }
@@ -84,12 +84,12 @@ namespace Application.Services
 
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var color = await _unitOfWork.ColorRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Color");
             await _unitOfWork.ColorRepository.DeleteAsync(color);
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
     }

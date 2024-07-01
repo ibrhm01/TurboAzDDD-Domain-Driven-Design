@@ -6,11 +6,11 @@ namespace Domain.Services
 {
 	public interface IColorService
 	{
-        Task<int> CreateAsync(CreateColorDto createColorDto);
-        Task<int> UpdateAsync(int id, UpdateColorDto updateColorDto);
+        Task<bool> CreateAsync(CreateColorDto createColorDto);
+        Task<bool> UpdateAsync(int id, UpdateColorDto updateColorDto);
         Task<List<GetColorDto>> GetAllAsync();
         Task<GetColorDto> GetOneAsync(int id);
-        Task<int> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }
 

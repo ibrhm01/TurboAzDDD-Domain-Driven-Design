@@ -5,11 +5,11 @@ namespace Domain.Services
 {
 	public interface IFuelTypeService
 	{
-        Task<int> CreateAsync(CreateFuelTypeDto createFuelTypeDto);
-        Task<int> UpdateAsync(int id, UpdateFuelTypeDto updateFuelTypeDto);
+        Task<bool> CreateAsync(CreateFuelTypeDto createFuelTypeDto);
+        Task<bool> UpdateAsync(int id, UpdateFuelTypeDto updateFuelTypeDto);
         Task<List<GetFuelTypeDto>> GetAllAsync();
         Task<GetFuelTypeDto> GetOneAsync(int id);
-        Task<int> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }
 

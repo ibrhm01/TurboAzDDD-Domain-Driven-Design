@@ -32,7 +32,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateTransmissionDto createDto)
+        public async Task<bool> CreateAsync(CreateTransmissionDto createDto)
         {
             if (await _unitOfWork.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == createDto.TransmissionName.Trim()))
                 throw new DuplicateNameException("There is already a Transmission with this name");
@@ -41,11 +41,11 @@ namespace Application.Services
 
             await _unitOfWork.TransmissionRepository.CreateAsync(mapped);
 
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateTransmissionDto updateDto)
+        public async Task<bool> UpdateAsync(int id, UpdateTransmissionDto updateDto)
         {
             Transmission? transmission = await _unitOfWork.TransmissionRepository.GetByIdAsyncForAll(id);
 
@@ -59,7 +59,7 @@ namespace Application.Services
             {
                 var mapped = _mapper.Map(updateDto, transmission);
                 await _unitOfWork.TransmissionRepository.UpdateAsync(mapped);
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
             }
 
         }
@@ -86,12 +86,12 @@ namespace Application.Services
 
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var transmission = await _unitOfWork.TransmissionRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Transmission");
             await _unitOfWork.TransmissionRepository.DeleteAsync(transmission);
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
     }

@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace UnitTests.Fixtures
 {
-	public class MarketsFixtures
+	public static class MarketsFixtures
 	{
 		public static List<Market> Markets() => new()
 		{
