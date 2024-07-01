@@ -39,7 +39,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateVehicleDto createDto, string webRootPath)
+        public async Task<bool> CreateAsync(CreateVehicleDto createDto, string webRootPath)
         {
             if (!await _unitOfWork.BodyTypeRepository.IsExistAsync(v => v.Id == createDto.BodyTypeId))
                 throw new EntityNotFoundException("There is no such BodyType with this ID");
@@ -69,7 +69,7 @@ namespace Application.Services
             var mapped = _mapper.Map<Vehicle>(createDto);
             
             await _unitOfWork.VehicleRepository.CreateAsync(mapped);
-            int result= await _unitOfWork.CompleteAsync();
+            var result= await _unitOfWork.CompleteAsync() > 0;
             if (createDto.TagIds is not null)
             {
                 foreach (var tagId in createDto.TagIds)
@@ -98,7 +98,7 @@ namespace Application.Services
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateVehicleDto updateDto, string webRootPath)
+        public async Task<bool> UpdateAsync(int id, UpdateVehicleDto updateDto, string webRootPath)
         {
             Vehicle? vehicle = await _unitOfWork.VehicleRepository.GetByIdAsyncForAll(id);
 
@@ -134,7 +134,7 @@ namespace Application.Services
             var mapped = _mapper.Map(updateDto, vehicle);
           
             await _unitOfWork.VehicleRepository.UpdateAsync(mapped);
-            int result = await _unitOfWork.CompleteAsync();
+            var result = await _unitOfWork.CompleteAsync() > 0;
 
             if (updateDto.TagIds is not null)
             {
@@ -199,13 +199,12 @@ namespace Application.Services
             return mapped;
         }
 
-        public async Task<int> DeleteAsync(int id, string WebRootPath)
+        public async Task<bool> DeleteAsync(int id, string WebRootPath)
         {
 
             var vehicle = await _unitOfWork.VehicleRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Vehicle");
             await _unitOfWork.VehicleRepository.DeleteAsync(vehicle);
-            return await _unitOfWork.CompleteAsync();
-
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public List<GetVehicleDto> GetAllFilteredAsync(GetAllFilteredVehiclesDto getAllFilteredVehiclesDto)

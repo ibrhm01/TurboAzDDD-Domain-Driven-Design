@@ -45,15 +45,15 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("resetPassword")]
-        public async Task<IActionResult> ResetPassword(string userId, string token, string newPassword)
+        public async Task<IActionResult> ResetPassword([FromForm] ResetDto resetDto)
         {
-            if (await _userService.ResetPasswordAsync(userId, token, newPassword)) return Ok("Password is reseted");
+            if (await _userService.ResetPasswordAsync(resetDto)) return Ok("Password is reseted");
             else return BadRequest("Password couldn't be reseted");
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
         {
             return StatusCode(200, await _userService.Login(loginDto));
         }
@@ -68,7 +68,7 @@ namespace API.Controllers
 
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("getAllUsers")]
         public IActionResult GetAllUsers()

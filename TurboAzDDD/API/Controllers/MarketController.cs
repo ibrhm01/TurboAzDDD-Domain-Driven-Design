@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateMarket(int id, [FromForm] UpdateMarketDto updateMarketDto)
         {
-            if (await _marketService.UpdateAsync(id, updateMarketDto) > 0) return Ok();
+            if (await _marketService.UpdateAsync(id, updateMarketDto)) return Ok();
             else return BadRequest();
 
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateMarket([FromForm] CreateMarketDto createMarketDto)
         {
-            if (await _marketService.CreateAsync(createMarketDto) > 0) return Ok();
+            if (await _marketService.CreateAsync(createMarketDto)) return Ok();
             else return BadRequest();
 
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteMarket(int id)
         {
-            if (await _marketService.DeleteAsync(id) > 0) return Ok();
+            if (await _marketService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

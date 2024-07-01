@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.DTOs.User
 {
 	public class ForgetDto
 	{
-		public string Email { get; set; } = null!;
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; } = null!;
 	}
 }
 

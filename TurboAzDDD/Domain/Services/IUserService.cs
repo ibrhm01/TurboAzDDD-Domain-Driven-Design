@@ -1,12 +1,6 @@
-﻿using System;
-using System.Net.Mail;
-using Domain.DTOs.Tag;
-using Domain.DTOs.User;
+﻿using Domain.DTOs.User;
 using Domain.Entities;
-using Domain.ENUMs;
-using Domain.Exceptions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+
 
 namespace Domain.Services
 {
@@ -18,7 +12,7 @@ namespace Domain.Services
         void Send(string to, string subject, string body);
         Task<string> Login(LoginDto loginDto);
         Task ForgetPasswordAsync(ForgetDto forgetDto, string baseUrl);
-        Task<bool> ResetPasswordAsync(string userId, string token, string newPassword);
+        Task<bool> ResetPasswordAsync(ResetDto resetDto);
         List<GetUserDto> GetAllAsync();
         Task<GetUserDto> GetOneByIdAsync(string userId);
         Task<GetUserDto> GetOneByUserNameAsync(string userName);

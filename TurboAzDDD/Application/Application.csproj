@@ -7,23 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Exceptions\" />
     <None Remove="Extensions\" />
     <None Remove="Configuration\" />
+    <None Remove="Mapper\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Mapper\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="MailKit" Version="4.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
   </ItemGroup>
 </Project>

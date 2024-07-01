@@ -13,7 +13,7 @@ namespace Infrastructure.Data.UnitOfWork
         {
             _appDbContext = appDbContext;
         }
-        public IVehicleRepository? _vehicleRepository;
+        private IVehicleRepository? _vehicleRepository;
 
         public IVehicleRepository VehicleRepository => _vehicleRepository ??= new VehicleRepository(_appDbContext);
 
@@ -29,35 +29,35 @@ namespace Infrastructure.Data.UnitOfWork
 
         public IFuelTypeRepository FuelTypeRepository => _fuelTypeRepository ??= new FuelTypeRepository(_appDbContext);
 
-        public ITransmissionRepository? _transmissionRepository;
+        private ITransmissionRepository? _transmissionRepository;
 
         public ITransmissionRepository TransmissionRepository => _transmissionRepository ??= new TransmissionRepository(_appDbContext);
 
-        public IBodyTypeRepository? _bodyTypeRepository;
+        private IBodyTypeRepository? _bodyTypeRepository;
 
         public IBodyTypeRepository BodyTypeRepository => _bodyTypeRepository ??= new BodyTypeRepository(_appDbContext);
 
-        public ISalonRepository? _salonRepository;
+        private ISalonRepository? _salonRepository;
 
         public ISalonRepository SalonRepository => _salonRepository ??= new SalonRepository(_appDbContext);
 
-        public IMarketRepository? _marketRepository;
+        private IMarketRepository? _marketRepository;
 
         public IMarketRepository MarketRepository => _marketRepository ??= new MarketRepository(_appDbContext);
 
-        public IDriveTypeRepository? _driveTypeRepository;
+        private IDriveTypeRepository? _driveTypeRepository;
 
         public IDriveTypeRepository DriveTypeRepository => _driveTypeRepository ??= new DriveTypeRepository(_appDbContext);
 
-        public IModelRepository? _modelRepository;
+        private IModelRepository? _modelRepository;
 
         public IModelRepository ModelRepository => _modelRepository ??= new ModelRepository(_appDbContext);
 
-        public ITagRepository? _tagRepository;
+        private ITagRepository? _tagRepository;
 
         public ITagRepository TagRepository => _tagRepository ??= new TagRepository(_appDbContext);
 
-        public IImageRepository? _imageRepository;
+        private IImageRepository? _imageRepository;
 
         public IImageRepository ImageRepository => _imageRepository ??= new ImageRepository(_appDbContext);
 

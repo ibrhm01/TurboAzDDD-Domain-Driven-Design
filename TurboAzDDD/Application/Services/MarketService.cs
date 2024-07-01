@@ -1,5 +1,4 @@
-﻿using System;
-using Application.Exceptions;
+﻿using Application.Exceptions;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.Market;
@@ -34,7 +33,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateMarketDto createDto)
+        public async Task<bool> CreateAsync(CreateMarketDto createDto)
         {
 
             if (await _unitOfWork.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == createDto.MarketName.Trim()))
@@ -44,11 +43,11 @@ namespace Application.Services
 
             await _unitOfWork.MarketRepository.CreateAsync(mapped);
 
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateMarketDto updateDto)
+        public async Task<bool> UpdateAsync(int id, UpdateMarketDto updateDto)
         {
             Market? market = await _unitOfWork.MarketRepository.GetByIdAsyncForAll(id);
 
@@ -62,38 +61,32 @@ namespace Application.Services
             {
                 var mapped = _mapper.Map(updateDto, market);
                 await _unitOfWork.MarketRepository.UpdateAsync(mapped);
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
             }
 
         }
 
         public async Task<List<GetMarketDto>> GetAllAsync()
         {
-            List<GetMarketDto> getMarketDtos = new();
+            var markets = await _unitOfWork.MarketRepository.GetAllAsync();
 
-            List<Market> markets = await _unitOfWork.MarketRepository.GetAllAsync();
-
-
-            var mapped = _mapper.Map(markets, getMarketDtos);
+            var mapped = _mapper.Map<List<GetMarketDto>>(markets);
             return mapped;
-
         }
         public async Task<GetMarketDto> GetOneAsync(int id)
         {
-            GetMarketDto getMarketDto = new();
+            var market = await _unitOfWork.MarketRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Market");
 
-            Market? market = await _unitOfWork.MarketRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Market");
-
-            var mapped = _mapper.Map(market, getMarketDto);
+            var mapped = _mapper.Map<GetMarketDto>(market);
             return mapped;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var market = await _unitOfWork.MarketRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Market");
             await _unitOfWork.MarketRepository.DeleteAsync(market);
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
     }

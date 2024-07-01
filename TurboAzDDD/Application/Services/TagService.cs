@@ -1,12 +1,10 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.Tag;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Application.Services
 {

@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Policy;
 using System.Text;
 using Application.Configuration;
 using Application.Exceptions;
@@ -19,7 +18,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using MimeKit.Text;
-using NuGet.Common;
 
 
 namespace Application.Services
@@ -58,7 +56,7 @@ namespace Application.Services
         /// <returns></returns>
         ///
 
-        public string GenerateJwtToken(AppUser user)
+        public string GenerateJwtToken(AppUser user) 
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtConfig.SecretKey);
@@ -69,7 +67,7 @@ namespace Application.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                         new Claim("Id", user.Id),
-                        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                        //new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
@@ -87,13 +85,19 @@ namespace Application.Services
 
         public async Task<bool> RegisterAsync(RegisterDto registerDto, string baseUrl)
         {
-            if (registerDto is null || baseUrl is null) throw new NotValidArgumentValueException("The value for registerDto or baseUrl is not valid");
+            if (registerDto is null || baseUrl is null)
+                throw new NotValidArgumentValueException("The value for registerDto or baseUrl is not valid");
 
             var user = await _userManager.FindByNameAsync(registerDto.UserName);
-            if (user is not null) throw new ExistedUserException("There is already such User with this UserName");
+            if (user is not null)
+                throw new ExistedUserException("There is already such User with this UserName");
 
             user = await _userManager.FindByEmailAsync(registerDto.Email);
-            if (user is not null) throw new ExistedUserException("There is already such User with this Email. Please Login!");
+            if (user is not null)
+                throw new ExistedUserException("There is already such User with this Email. Please Login!");
+
+            if (registerDto.Password != registerDto.RePassword)
+                throw new NotValidArgumentValueException("RePassword do not match with the Password you provided!");
 
             user = new AppUser();
 
@@ -105,15 +109,25 @@ namespace Application.Services
             if (CreateUserResult.Succeeded)
             {
                 var AddRoleResult = await _userManager.AddToRoleAsync(user, Role.Member.ToString());
+                
+                if (!AddRoleResult.Succeeded)
+                {
+                    string errorMessages = string.Empty;
 
-                if (!AddRoleResult.Succeeded) throw new RoleAddException("The roles couldn't be added to the created user!");
+                    foreach (var error in AddRoleResult.Errors)
+                    {
+                        errorMessages += error.Description;
+                    }
+                    throw new NotValidArgumentValueException(errorMessages);
+                }
+
                 string path = "wwwroot/Verify.html";
                 string body = string.Empty;
                 body = await body.ReadFileAsync(path);
 
                 string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                string link = $"{baseUrl}/Account/VerifyEmail?userId={user.Id}&token={token}";
+                string link = $"{baseUrl}/api/Account/VerifyEmail?userId={user.Id}&token={token}";
 
 
                 body = body.Replace("{{link}}", link);
@@ -133,8 +147,17 @@ namespace Application.Services
                 return true;
 
             }
-            return false;
+            else
+            {
 
+                string errorMessages = string.Empty;
+
+                foreach (var error in CreateUserResult.Errors) 
+                {
+                    errorMessages+=error.Description;
+                }
+                throw new NotValidArgumentValueException(errorMessages);
+            }
         }
 
         public async Task<bool> ConfirmEmailAsync(string userId, string token)
@@ -185,7 +208,7 @@ namespace Application.Services
             body = await body.ReadFileAsync(path);
             string token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            string link = $"{baseUrl}/Account/ResetPasswordAsync?userId={user.Id}&token={token}";
+            string link = $"{baseUrl}/api/Account/ResetPasswordAsync?userId={user.Id}&token={token}";
             body = body.Replace("{{link}}", link);
             body = body.Replace("{{Fullname}}", user.FullName);
             string subject = "Forget Password";
@@ -198,24 +221,33 @@ namespace Application.Services
 
         }
 
-        public async Task<bool> ResetPasswordAsync(string userId, string token, string newPassword)
+        public async Task<bool> ResetPasswordAsync(ResetDto resetDto)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(resetDto.UserId);
             if (user is null) throw new UserNotFoundException("There is no such user with this UserId");
 
-            if (!await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.ToString(), "ResetPassword", token))
+            if (!await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", resetDto.Token))
                 throw new NotValidArgumentValueException("User is failed to be verified! Provided token does not follow validation rules!");
 
-            if (await _userManager.CheckPasswordAsync(user, newPassword))
+            if (await _userManager.CheckPasswordAsync(user, resetDto.NewPassword))
                 throw new NotValidArgumentValueException("The password provided is the same with the old one!");
 
-            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
-            if (result.Succeeded)
+            var ResetPasswordResult = await _userManager.ResetPasswordAsync(user, resetDto.Token, resetDto.NewPassword);
+            if (ResetPasswordResult.Succeeded)
             {
                 await _userManager.UpdateSecurityStampAsync(user);
                 return true;
             }
-            return false;
+            else
+            {
+                string errorMessages = string.Empty;
+
+                foreach (var error in ResetPasswordResult.Errors)
+                {
+                    errorMessages += error.Description;
+                }
+                throw new NotValidArgumentValueException(errorMessages);
+            }
         }
 
         public List<GetUserDto> GetAllAsync()

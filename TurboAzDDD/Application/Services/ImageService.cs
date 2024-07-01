@@ -1,6 +1,4 @@
-﻿using System;
-using Application.Exceptions;
-using Microsoft.AspNetCore.Hosting;
+﻿using Application.Exceptions;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.Image;
@@ -8,7 +6,6 @@ using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Services;
 using Application.Extensions;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Application.Services
 {

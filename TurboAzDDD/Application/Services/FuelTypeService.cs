@@ -1,5 +1,4 @@
-﻿using System;
-using Application.Exceptions;
+﻿using Application.Exceptions;
 using AutoMapper;
 using Domain;
 using Domain.DTOs.FuelType;

@@ -92,8 +92,9 @@ namespace Infrastructure.Mapper
             CreateMap<UpdateTagDto, Tag>();
             CreateMap<Tag, GetTagDto>();
 
-            CreateMap<RegisterDto, AppUser>();
-              //.ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            CreateMap<RegisterDto, AppUser>()
+              .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+              .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
             CreateMap<AppUser, GetUserDto>();
 
         }

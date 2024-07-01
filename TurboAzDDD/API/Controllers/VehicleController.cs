@@ -23,7 +23,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateVehicle(int id, [FromForm] UpdateVehicleDto updateVehicleDto)
         {
-            if (await _vehicleService.UpdateAsync(id, updateVehicleDto, _webHostEnvironment.WebRootPath) > 0) return Ok();
+            if (await _vehicleService.UpdateAsync(id, updateVehicleDto, _webHostEnvironment.WebRootPath)) return Ok();
             else return BadRequest();
 
         }
@@ -33,7 +33,7 @@ namespace API.Controllers
         public async Task<IActionResult> CreateVehicle([FromForm] CreateVehicleDto createVehicleDto)
         {
 
-            if (await _vehicleService.CreateAsync(createVehicleDto, _webHostEnvironment.WebRootPath) > 0) return Ok();
+            if (await _vehicleService.CreateAsync(createVehicleDto, _webHostEnvironment.WebRootPath)) return Ok();
             else return BadRequest();
 
         }
@@ -57,7 +57,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            if (await _vehicleService.DeleteAsync(id, _webHostEnvironment.WebRootPath) > 0) return Ok();
+            if (await _vehicleService.DeleteAsync(id, _webHostEnvironment.WebRootPath)) return Ok();
             else return BadRequest();
         }
 

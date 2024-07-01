@@ -9,6 +9,7 @@ namespace Domain.DTOs.Model
         public string ModelName { get; set; } = null!;
         [Required]
         public int BrandId { get; set; }
+        //public Entities.Brand Brand { get; set; } = null!;
 
     }
 }

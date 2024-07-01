@@ -43,6 +43,11 @@ namespace Application.Services
                     throw new DuplicateNameException("There is already a Model with this name");
 
                 var mapped = _mapper.Map<Model>(createDto);
+                //mapped.Brand = new Brand()
+                //{
+                //    BrandName = createDto.Brand.BrandName,
+                //    Id= createDto.Brand.Id,
+                //};
 
                 await _unitOfWork.ModelRepository.CreateAsync(mapped);
 

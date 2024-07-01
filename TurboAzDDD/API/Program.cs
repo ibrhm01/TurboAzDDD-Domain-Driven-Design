@@ -4,7 +4,6 @@ using Application.Configuration;
 using Application.Services;
 using Domain;
 using Domain.Entities;
-using Domain.ENUMs;
 using Domain.Services;
 using Infrastructure.Data.Context;
 using Infrastructure.Data.UnitOfWork;
@@ -12,8 +11,6 @@ using Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +43,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireDigit = true;
 
 
-}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+}).AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
 //builder.Services.AddScoped<IVehicleService, VehicleService>();
 //builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
@@ -81,12 +78,12 @@ builder.Services.AddAuthentication(options =>
     jwt.SaveToken = true;
     jwt.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        //ValidIssuer = jwtSettings.Issuer,
-        //ValidAudience = jwtSettings.Audience,
+        ValidIssuer = jwtConfig.Issuer,
+        ValidAudience = jwtConfig.Audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SecretKey))
     };
 });
