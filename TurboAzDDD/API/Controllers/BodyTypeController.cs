@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateBodyType(int id, [FromForm] UpdateBodyTypeDto updateBodyTypeDto)
         {
-            if (await _bodyTypeService.UpdateAsync(id, updateBodyTypeDto) > 0) return Ok();
+            if (await _bodyTypeService.UpdateAsync(id, updateBodyTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateBodyType([FromForm] CreateBodyTypeDto createBodyTypeDto)
         {
-            if (await _bodyTypeService.CreateAsync(createBodyTypeDto) > 0) return Ok();
+            if (await _bodyTypeService.CreateAsync(createBodyTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteBodyType(int id)
         {
-            if (await _bodyTypeService.DeleteAsync(id) > 0) return Ok();
+            if (await _bodyTypeService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
 

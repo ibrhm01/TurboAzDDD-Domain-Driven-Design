@@ -1,35 +1,30 @@
-using Domain.DTOs.FuelType;
-using Domain.Entities;
-
 namespace UnitTests.Fixtures;
 
-public static class FuelTypesFixtures
+public class BodyTypesFixtures
 {
-    public static List<FuelType> FuelTypes() => new()
+    public static List<BodyType> BodyTypes() => new()
     {
-        new FuelType()
+        new BodyType()
         {
             Id =1,
-            FuelTypeName ="Benzin",
+            BodyTypeName ="Avtobus",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
 
-        new FuelType()
+        new BodyType()
         {
             Id =2,
-            FuelTypeName ="Dizel",
+            BodyTypeName ="Fayton",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
-        new FuelType()
+        new BodyType()
         {   Id =3,
-            FuelTypeName ="Qaz",
+            BodyTypeName ="Furqon",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
 
     };
-
-   
 }

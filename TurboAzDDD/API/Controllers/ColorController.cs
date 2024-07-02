@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateColor(int id, [FromForm] UpdateColorDto updateColorDto)
         {
-                if(await _colorService.UpdateAsync(id, updateColorDto)>0) return Ok();
+                if(await _colorService.UpdateAsync(id, updateColorDto)) return Ok();
                 else return BadRequest();
             
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateColor([FromForm] CreateColorDto createColorDto)
         {
-                if(await _colorService.CreateAsync(createColorDto)>0) return Ok();
+                if(await _colorService.CreateAsync(createColorDto)) return Ok();
                 else return BadRequest();
             
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteColor(int id)
         {
-            if(await _colorService.DeleteAsync(id)>0) return Ok();
+            if(await _colorService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

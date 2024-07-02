@@ -6,6 +6,7 @@ using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Services;
 using Application.Extensions;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Application.Services
 {
@@ -17,14 +18,16 @@ namespace Application.Services
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="unitOfWork"></param>
-        public ImageService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ImageService(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
         /// <summary>
         /// 
@@ -32,7 +35,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateImageDto createDto, string WebRootPath)
+        public async Task<int> CreateAsync(CreateImageDto createDto)
         {
             int size = 500;
 
@@ -41,7 +44,7 @@ namespace Application.Services
 
             if (await _unitOfWork.VehicleRepository.IsExistAsync(v => v.Id == createDto.VehicleId))
             {
-                createDto.ImageUrl = await createDto.Photo.SaveImageFileAsync(WebRootPath, "uploads");
+                createDto.ImageUrl = await createDto.Photo.SaveImageFileAsync(_webHostEnvironment.WebRootPath, "uploads");
 
                 var mapped = _mapper.Map<Image>(createDto);
 
@@ -53,7 +56,7 @@ namespace Application.Services
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateImageDto updateDto, string WebRootPath)
+        public async Task<int> UpdateAsync(int id, UpdateImageDto updateDto)
         {
 
             Image? image = await _unitOfWork.ImageRepository.GetByIdAsyncForAll(id);
@@ -69,9 +72,9 @@ namespace Application.Services
             if (await _unitOfWork.VehicleRepository.IsExistAsync(v => v.Id == updateDto.VehicleId))
             {
 
-                updateDto.Photo.DeleteImageFile(WebRootPath, "uploads", image.ImageUrl);
+                updateDto.Photo.DeleteImageFile(_webHostEnvironment.WebRootPath, "uploads", image.ImageUrl);
 
-                updateDto.ImageUrl = await updateDto.Photo.SaveImageFileAsync(WebRootPath, "uploads");
+                updateDto.ImageUrl = await updateDto.Photo.SaveImageFileAsync(_webHostEnvironment.WebRootPath, "uploads");
 
 
                 var mapped = _mapper.Map(updateDto, image);
@@ -103,7 +106,7 @@ namespace Application.Services
 
         }
 
-        public async Task<int> DeleteAsync(int id, string WebRootPath)
+        public async Task<int> DeleteAsync(int id)
         {
 
             var image = await _unitOfWork.ImageRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Image");

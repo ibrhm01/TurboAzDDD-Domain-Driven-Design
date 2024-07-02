@@ -5,11 +5,11 @@ namespace Domain.Services
 {
 	public interface IBodyTypeService 
 	{
-        Task<int> CreateAsync(CreateBodyTypeDto createBodyTypeDto);
-        Task<int> UpdateAsync(int id, UpdateBodyTypeDto updateBodyTypeDto);
+        Task<bool> CreateAsync(CreateBodyTypeDto createBodyTypeDto);
+        Task<bool> UpdateAsync(int id, UpdateBodyTypeDto updateBodyTypeDto);
         Task<List<GetBodyTypeDto>> GetAllAsync();
         Task<GetBodyTypeDto> GetOneAsync(int id);
-        Task<int> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }
 

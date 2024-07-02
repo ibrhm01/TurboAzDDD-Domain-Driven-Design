@@ -1,23 +1,11 @@
-﻿using Application.Exceptions;
-using Application.Services;
-using AutoMapper;
-using Domain;
-using Domain.DTOs.Market;
-using Domain.Entities;
-using Domain.Exceptions;
-using Domain.Repositories;
-using Domain.Services;
-using FluentAssertions;
-using Infrastructure.Mapper;
-using Moq;
-using Org.BouncyCastle.Asn1.X509;
-using UnitTests.Fixtures;
+﻿using Domain.DTOs.Market;
+
 
 namespace UnitTests.Services
 {
     public class MarketServiceTest
     {
-        private IMapper _mapper { get; set; }
+         private IMapper _mapper { get; set; }
         private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
         private List<Market> _markets { get; set; }
 
@@ -159,12 +147,15 @@ namespace UnitTests.Services
         public async void CreateAsync_OnSuccess_ReturnsTrue()
         {
             //Arrange
-            var createMarketDto = MarketsFixtures.CreateMarketDto();
+            var createMarketDto = new CreateMarketDto() {MarketName = "Avropa"};
             var mapped = _mapper.Map<Market>(createMarketDto);
             
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == createMarketDto.MarketName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.MarketRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
@@ -181,12 +172,15 @@ namespace UnitTests.Services
         public async void CreateAsync_OnFailure_ReturnsFalse()
         {
             //Arrange
-            var createMarketDto = MarketsFixtures.CreateMarketDto();
+            var createMarketDto = new CreateMarketDto() {MarketName = "Avropa"};
             var mapped = _mapper.Map<Market>(createMarketDto);
             
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == createMarketDto.MarketName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.MarketRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(0);
 
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
@@ -203,10 +197,10 @@ namespace UnitTests.Services
         public async void CreateAsync_OnError_ThrowsDuplicateNameException()
         {
             //Arrange
-            var createMarketDto = MarketsFixtures.CreateMarketDto();
-            var mapped = _mapper.Map<Market>(createMarketDto);
+            var createMarketDto = new CreateMarketDto() {MarketName = "Amerika"};
             
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == createMarketDto.MarketName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
             
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
@@ -221,14 +215,17 @@ namespace UnitTests.Services
         public async void UpdateAsync_OnSuccess_ReturnsTrue(int id)
         {
             //Arrange
-            var updateMarketDto = MarketsFixtures.UpdateMarketDto();
+            var updateMarketDto = new UpdateMarketDto() {MarketName = "Avropa", IsDeleted = false};
             var market = _markets.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateMarketDto, market);
-            
+            var mapped = _mapper.Map<Market>(updateMarketDto);
+
             _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id)).ReturnsAsync(market);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == updateMarketDto.MarketName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.MarketRepository.UpdateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
@@ -248,14 +245,13 @@ namespace UnitTests.Services
         public async void UpdateAsync_OnFailure_ReturnsFalse(int id)
         {
             //Arrange
-            var updateMarketDto = MarketsFixtures.UpdateMarketDto();
+            var updateMarketDto = new UpdateMarketDto() {MarketName = "Avropa", IsDeleted = false};
             var market = _markets.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateMarketDto, market);
-            
-            
+            var mapped = _mapper.Map<Market>(updateMarketDto);
             
             _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id)).ReturnsAsync(market);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == updateMarketDto.MarketName.Trim())).ReturnsAsync(false);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
             _mockUnitOfWork.Setup(u => u.MarketRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
             _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
             
@@ -277,11 +273,11 @@ namespace UnitTests.Services
         public async void UpdateAsync_OnError_ThrowsEntityNotFoundException(int id)
         {
             //Arrange
-            var updateMarketDto = MarketsFixtures.UpdateMarketDto();
+            var updateMarketDto = new UpdateMarketDto() {MarketName = "Avropa", IsDeleted = false};
             var market = _markets.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateMarketDto, market);
             
-            _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id)).ReturnsAsync(market);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(market);
             
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
@@ -296,12 +292,14 @@ namespace UnitTests.Services
         public async void UpdateAsync_OnError_ThrowsDuplicateNameException(int id)
         {
             //Arrange
-            var updateMarketDto = MarketsFixtures.UpdateMarketDto();
+            var updateMarketDto = new UpdateMarketDto() {MarketName = "Amerika", IsDeleted = false};
             var market = _markets.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateMarketDto, market);
             
-            _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id)).ReturnsAsync(market);
-            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(b => b.MarketName.Trim() == updateMarketDto.MarketName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(market);
+            _mockUnitOfWork.Setup(u => u.MarketRepository.IsExistAsync(It.IsAny<Expression<Func<Market, bool>>>()))
+                .ReturnsAsync((Expression<Func<Market, bool>> predicate) => _markets.Any(predicate.Compile()));
+            
             var mockMarketService = new MarketService(_mockUnitOfWork.Object, _mapper);
             
             // Act and  Assert

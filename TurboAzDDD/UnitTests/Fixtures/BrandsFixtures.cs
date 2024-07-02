@@ -1,35 +1,30 @@
-using Domain.DTOs.FuelType;
-using Domain.Entities;
-
 namespace UnitTests.Fixtures;
 
-public static class FuelTypesFixtures
+public class BrandsFixtures
 {
-    public static List<FuelType> FuelTypes() => new()
+    public static List<Brand> Brands() => new()
     {
-        new FuelType()
+        new Brand()
         {
             Id =1,
-            FuelTypeName ="Benzin",
+            BrandName ="Alfa Romeo",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
 
-        new FuelType()
+        new Brand()
         {
             Id =2,
-            FuelTypeName ="Dizel",
+            BrandName ="Aprilia",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
-        new FuelType()
+        new Brand()
         {   Id =3,
-            FuelTypeName ="Qaz",
+            BrandName ="Audi",
             IsDeleted = false,
             // CreatedDate = DateTime.UtcNow
         },
 
     };
-
-   
 }

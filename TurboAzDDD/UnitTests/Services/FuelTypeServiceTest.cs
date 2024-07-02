@@ -1,20 +1,11 @@
-using Application.Exceptions;
-using Application.Services;
-using AutoMapper;
-using Domain;
 using Domain.DTOs.FuelType;
-using Domain.Entities;
-using Domain.Exceptions;
-using FluentAssertions;
-using Infrastructure.Mapper;
-using Moq;
-using UnitTests.Fixtures;
+
 
 namespace UnitTests.Services;
 
 public class FuelTypeServiceTest
 {
-        private IMapper _mapper { get; set; }
+         private IMapper _mapper { get; set; }
         private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
         private List<FuelType> _fuelTypes { get; set; }
 
@@ -156,12 +147,15 @@ public class FuelTypeServiceTest
         public async void CreateAsync_OnSuccess_ReturnsTrue()
         {
             //Arrange
-            var createFuelTypeDto = FuelTypesFixtures.CreateFuelTypeDto();
+            var createFuelTypeDto = new CreateFuelTypeDto() {FuelTypeName = "Hibrid"};
             var mapped = _mapper.Map<FuelType>(createFuelTypeDto);
             
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == createFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
@@ -178,12 +172,15 @@ public class FuelTypeServiceTest
         public async void CreateAsync_OnFailure_ReturnsFalse()
         {
             //Arrange
-            var createFuelTypeDto = FuelTypesFixtures.CreateFuelTypeDto();
+            var createFuelTypeDto = new CreateFuelTypeDto() {FuelTypeName = "Hibrid"};
             var mapped = _mapper.Map<FuelType>(createFuelTypeDto);
             
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == createFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(0);
 
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
@@ -200,10 +197,10 @@ public class FuelTypeServiceTest
         public async void CreateAsync_OnError_ThrowsDuplicateNameException()
         {
             //Arrange
-            var createFuelTypeDto = FuelTypesFixtures.CreateFuelTypeDto();
-            var mapped = _mapper.Map<FuelType>(createFuelTypeDto);
+            var createFuelTypeDto = new CreateFuelTypeDto() {FuelTypeName = "Benzin"};
             
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == createFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
             
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
@@ -218,14 +215,17 @@ public class FuelTypeServiceTest
         public async void UpdateAsync_OnSuccess_ReturnsTrue(int id)
         {
             //Arrange
-            var updateFuelTypeDto = FuelTypesFixtures.UpdateFuelTypeDto();
+            var updateFuelTypeDto = new UpdateFuelTypeDto() {FuelTypeName = "Hibrid", IsDeleted = false};
             var fuelType = _fuelTypes.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateFuelTypeDto, fuelType);
-            
+            var mapped = _mapper.Map<FuelType>(updateFuelTypeDto);
+
             _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id)).ReturnsAsync(fuelType);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == updateFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.UpdateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
@@ -245,14 +245,13 @@ public class FuelTypeServiceTest
         public async void UpdateAsync_OnFailure_ReturnsFalse(int id)
         {
             //Arrange
-            var updateFuelTypeDto = FuelTypesFixtures.UpdateFuelTypeDto();
+            var updateFuelTypeDto = new UpdateFuelTypeDto() {FuelTypeName = "Hibrid", IsDeleted = false};
             var fuelType = _fuelTypes.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateFuelTypeDto, fuelType);
-            
-            
+            var mapped = _mapper.Map<FuelType>(updateFuelTypeDto);
             
             _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id)).ReturnsAsync(fuelType);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == updateFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(false);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
             _mockUnitOfWork.Setup(u => u.FuelTypeRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
             _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
             
@@ -274,11 +273,11 @@ public class FuelTypeServiceTest
         public async void UpdateAsync_OnError_ThrowsEntityNotFoundException(int id)
         {
             //Arrange
-            var updateFuelTypeDto = FuelTypesFixtures.UpdateFuelTypeDto();
+            var updateFuelTypeDto = new UpdateFuelTypeDto() {FuelTypeName = "Hibrid", IsDeleted = false};
             var fuelType = _fuelTypes.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateFuelTypeDto, fuelType);
             
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id)).ReturnsAsync(fuelType);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(fuelType);
             
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
@@ -293,12 +292,14 @@ public class FuelTypeServiceTest
         public async void UpdateAsync_OnError_ThrowsDuplicateNameException(int id)
         {
             //Arrange
-            var updateFuelTypeDto = FuelTypesFixtures.UpdateFuelTypeDto();
+            var updateFuelTypeDto = new UpdateFuelTypeDto() {FuelTypeName = "Benzin", IsDeleted = false};
             var fuelType = _fuelTypes.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateFuelTypeDto, fuelType);
             
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id)).ReturnsAsync(fuelType);
-            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(b => b.FuelTypeName.Trim() == updateFuelTypeDto.FuelTypeName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(fuelType);
+            _mockUnitOfWork.Setup(u => u.FuelTypeRepository.IsExistAsync(It.IsAny<Expression<Func<FuelType, bool>>>()))
+                .ReturnsAsync((Expression<Func<FuelType, bool>> predicate) => _fuelTypes.Any(predicate.Compile()));
+            
             var mockFuelTypeService = new FuelTypeService(_mockUnitOfWork.Object, _mapper);
             
             // Act and  Assert

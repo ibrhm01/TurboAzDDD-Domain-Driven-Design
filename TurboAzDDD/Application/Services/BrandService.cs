@@ -33,7 +33,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateBrandDto createDto)
+        public async Task<bool> CreateAsync(CreateBrandDto createDto)
         {
 
             if (await _unitOfWork.BrandRepository.IsExistAsync(b => b.BrandName.Trim() == createDto.BrandName.Trim()))
@@ -43,13 +43,13 @@ namespace Application.Services
 
             await _unitOfWork.BrandRepository.CreateAsync(mapped);
 
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateBrandDto updateDto)
+        public async Task<bool> UpdateAsync(int id, UpdateBrandDto updateDto)
         {
-            Brand? brand = await _unitOfWork.BrandRepository.GetByIdAsyncForAll(id);
+            var brand = await _unitOfWork.BrandRepository.GetByIdAsyncForAll(id);
 
 
             if (brand is null) throw new EntityNotFoundException("There is no such Brand");
@@ -59,42 +59,40 @@ namespace Application.Services
 
             else
             {
-                var mapped = _mapper.Map(updateDto, brand);
+                var mapped = _mapper.Map<Brand>(updateDto);
                 await _unitOfWork.BrandRepository.UpdateAsync(mapped);
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
             }
 
         }
 
         public async Task<List<GetBrandDto>> GetAllAsync()
         {
-            List<GetBrandDto> getBrandDtos = new();
 
-            List<Brand> brands = await _unitOfWork.BrandRepository.GetAllAsync();
+            var brands = await _unitOfWork.BrandRepository.GetAllAsync();
 
 
-            var mapped = _mapper.Map(brands, getBrandDtos);
+            var mapped = _mapper.Map<List<GetBrandDto>>(brands);
             return mapped;
 
         }
         public async Task<GetBrandDto> GetOneAsync(int id)
         {
-            GetBrandDto getBrandDto = new();
 
-            Brand? brand = await _unitOfWork.BrandRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Brand");
+            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Brand");
 
-            var mapped = _mapper.Map(brand, getBrandDto);
+            var mapped = _mapper.Map<GetBrandDto>(brand);
             return mapped;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Brand");
 
             await _unitOfWork.BrandRepository.DeleteAsync(brand);
 
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
     }

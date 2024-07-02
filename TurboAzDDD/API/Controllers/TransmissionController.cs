@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateTransmission(int id, [FromForm] UpdateTransmissionDto updateTransmissionDto)
         {
-            if (await _transmissionService.UpdateAsync(id, updateTransmissionDto) > 0) return Ok();
+            if (await _transmissionService.UpdateAsync(id, updateTransmissionDto)) return Ok();
             else return BadRequest();
 
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateTransmission([FromForm] CreateTransmissionDto createTransmissionDto)
         {
-            if (await _transmissionService.CreateAsync(createTransmissionDto) > 0) return Ok();
+            if (await _transmissionService.CreateAsync(createTransmissionDto)) return Ok();
             else return BadRequest();
 
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteTransmission(int id)
         {
-            if (await _transmissionService.DeleteAsync(id) > 0) return Ok();
+            if (await _transmissionService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

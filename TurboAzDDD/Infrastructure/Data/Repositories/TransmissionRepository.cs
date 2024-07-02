@@ -9,6 +9,7 @@ namespace Infrastructure.Data.Repositories
     public class TransmissionRepository : RepositoryBase<Transmission>, ITransmissionRepository
     {
         public readonly ApplicationDbContext _appDbContext;
+
         public TransmissionRepository(ApplicationDbContext appDbContext) : base(appDbContext)
         {
             _appDbContext = appDbContext;

@@ -49,7 +49,7 @@ namespace Application.Services
 
         public async Task<bool> UpdateAsync(int id, UpdateMarketDto updateDto)
         {
-            Market? market = await _unitOfWork.MarketRepository.GetByIdAsyncForAll(id);
+            var market = await _unitOfWork.MarketRepository.GetByIdAsyncForAll(id);
 
 
             if (market is null) throw new EntityNotFoundException("There is no such Market");
@@ -59,7 +59,7 @@ namespace Application.Services
 
             else
             {
-                var mapped = _mapper.Map(updateDto, market);
+                var mapped = _mapper.Map<Market>(updateDto);
                 await _unitOfWork.MarketRepository.UpdateAsync(mapped);
                 return await _unitOfWork.CompleteAsync() > 0;
             }

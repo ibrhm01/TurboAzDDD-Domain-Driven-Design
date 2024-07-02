@@ -31,14 +31,5 @@ public static class ColorsFixtures
 
     };
 
-    public static CreateColorDto CreateColorDto() => new CreateColorDto()
-    {
-        ColorName = "Benzin",
-    };
-        
-    public static UpdateColorDto UpdateColorDto() => new UpdateColorDto()
-    {
-        ColorName = "Dizel",
-        IsDeleted = false
-    };
+    
 }

@@ -45,7 +45,7 @@ namespace Application.Services
 
         public async Task<bool> UpdateAsync(int id, UpdateColorDto updateDto)
         {
-            Color? color = await _unitOfWork.ColorRepository.GetByIdAsyncForAll(id);
+            var color = await _unitOfWork.ColorRepository.GetByIdAsyncForAll(id);
 
 
             if (color is null) throw new EntityNotFoundException("There is no such Color");
@@ -55,7 +55,9 @@ namespace Application.Services
 
             else
             {
-                var mapped = _mapper.Map(updateDto, color);
+                // var mapped = _mapper.Map<Color>(updateDto);
+                var mapped = _mapper.Map<Color>(updateDto);
+
                 await _unitOfWork.ColorRepository.UpdateAsync(mapped);
                 return await _unitOfWork.CompleteAsync() > 0;
             }
@@ -64,22 +66,18 @@ namespace Application.Services
 
         public async Task<List<GetColorDto>> GetAllAsync()
         {
-            List<GetColorDto> getColorDtos = new();
+            var colors = await _unitOfWork.ColorRepository.GetAllAsync();
 
-            List<Color> colors = await _unitOfWork.ColorRepository.GetAllAsync();
-
-
-            var mapped = _mapper.Map(colors, getColorDtos);
+            var mapped = _mapper.Map<List<GetColorDto>>(colors);
             return mapped;
 
         }
         public async Task<GetColorDto> GetOneAsync(int id)
         {
-            GetColorDto getColorDto = new();
 
-            Color? color = await _unitOfWork.ColorRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Color");
+            var color = await _unitOfWork.ColorRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Color");
 
-            var mapped = _mapper.Map(color, getColorDto);
+            var mapped = _mapper.Map<GetColorDto>(color);
             return mapped;
 
         }

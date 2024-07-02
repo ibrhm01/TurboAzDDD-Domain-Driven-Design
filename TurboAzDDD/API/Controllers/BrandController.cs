@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateBrand(int id, [FromForm] UpdateBrandDto updateBrandDto)
         {
-                if(await _brandService.UpdateAsync(id, updateBrandDto)>0) return Ok();
+                if(await _brandService.UpdateAsync(id, updateBrandDto)) return Ok();
                 else return StatusCode(500);
         }
 
@@ -27,7 +27,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateBrand([FromForm] CreateBrandDto createBrandDto)
         {
-            if (await _brandService.CreateAsync(createBrandDto) > 0) return Ok();
+            if (await _brandService.CreateAsync(createBrandDto)) return Ok();
             else return StatusCode(500);
 
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteBrand(int id)
         {
-            if (await _brandService.DeleteAsync(id) > 0) return Ok();
+            if (await _brandService.DeleteAsync(id)) return Ok();
             else return StatusCode(500);
         }
     }

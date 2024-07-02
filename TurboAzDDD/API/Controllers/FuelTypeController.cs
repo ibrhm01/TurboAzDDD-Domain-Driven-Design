@@ -19,7 +19,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateFuelType(int id, [FromForm] UpdateFuelTypeDto updateFuelTypeDto)
         {
-            if (await _fuelTypeService.UpdateAsync(id, updateFuelTypeDto) > 0) return Ok();
+            if (await _fuelTypeService.UpdateAsync(id, updateFuelTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateFuelType([FromForm] CreateFuelTypeDto createFuelTypeDto)
         {
-            if (await _fuelTypeService.CreateAsync(createFuelTypeDto) > 0) return Ok();
+            if (await _fuelTypeService.CreateAsync(createFuelTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -52,7 +52,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteFuelType(int id)
         {
-            if (await _fuelTypeService.DeleteAsync(id) > 0) return Ok();
+            if (await _fuelTypeService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

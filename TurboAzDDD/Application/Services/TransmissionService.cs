@@ -47,7 +47,7 @@ namespace Application.Services
 
         public async Task<bool> UpdateAsync(int id, UpdateTransmissionDto updateDto)
         {
-            Transmission? transmission = await _unitOfWork.TransmissionRepository.GetByIdAsyncForAll(id);
+            var transmission = await _unitOfWork.TransmissionRepository.GetByIdAsyncForAll(id);
 
 
             if (transmission is null) throw new EntityNotFoundException("There is no such Transmission");
@@ -57,7 +57,7 @@ namespace Application.Services
 
             else
             {
-                var mapped = _mapper.Map(updateDto, transmission);
+                var mapped = _mapper.Map<Transmission>(updateDto);
                 await _unitOfWork.TransmissionRepository.UpdateAsync(mapped);
                 return await _unitOfWork.CompleteAsync() > 0;
             }
@@ -66,22 +66,20 @@ namespace Application.Services
 
         public async Task<List<GetTransmissionDto>> GetAllAsync()
         {
-            List<GetTransmissionDto> getTransmissionDtos = new();
 
-            List<Transmission> transmissions = await _unitOfWork.TransmissionRepository.GetAllAsync();
+            var transmissions = await _unitOfWork.TransmissionRepository.GetAllAsync();
 
 
-            var mapped = _mapper.Map(transmissions, getTransmissionDtos);
+            var mapped = _mapper.Map<List<GetTransmissionDto>>(transmissions);
             return mapped;
 
         }
         public async Task<GetTransmissionDto> GetOneAsync(int id)
         {
-            GetTransmissionDto getTransmissionDto = new();
 
-            Transmission? transmission = await _unitOfWork.TransmissionRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Transmission");
+            var transmission = await _unitOfWork.TransmissionRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Transmission");
 
-            var mapped = _mapper.Map(transmission, getTransmissionDto);
+            var mapped = _mapper.Map<GetTransmissionDto>(transmission);
             return mapped;
 
         }

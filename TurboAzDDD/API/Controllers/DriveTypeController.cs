@@ -18,7 +18,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateDriveType(int id, [FromForm] UpdateDriveTypeDto updateDriveTypeDto)
         {
-            if (await _driveTypeService.UpdateAsync(id, updateDriveTypeDto) > 0) return Ok();
+            if (await _driveTypeService.UpdateAsync(id, updateDriveTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -27,7 +27,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateDriveType([FromForm] CreateDriveTypeDto createDriveTypeDto)
         {
-            if (await _driveTypeService.CreateAsync(createDriveTypeDto) > 0) return Ok();
+            if (await _driveTypeService.CreateAsync(createDriveTypeDto)) return Ok();
             else return BadRequest();
 
         }
@@ -51,7 +51,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteDriveType(int id)
         {
-            if (await _driveTypeService.DeleteAsync(id) > 0) return Ok();
+            if (await _driveTypeService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

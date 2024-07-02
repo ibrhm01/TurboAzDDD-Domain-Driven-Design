@@ -13,11 +13,11 @@ namespace Domain.Services
         /// </summary>
         /// <param name="createDto"></param>
         /// <returns></returns>
-        Task<int> CreateAsync(CreateBrandDto createBrandDto);
-        Task<int> UpdateAsync(int id, UpdateBrandDto updateBrandDto);
+        Task<bool> CreateAsync(CreateBrandDto createBrandDto);
+        Task<bool> UpdateAsync(int id, UpdateBrandDto updateBrandDto);
         Task<List<GetBrandDto>> GetAllAsync();
         Task<GetBrandDto> GetOneAsync(int id);
-        Task<int> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
 
     }
 }

@@ -19,6 +19,7 @@ namespace Domain.DTOs.Vehicle
         public int YearOfManufacture { get; set; }
         [Required]
         public int PowerOutput { get; set; }
+        public int EngineDisplacement { get; set; }
         public bool? IsBarterPossible { get; set; }
         public bool? WithCredit { get; set; }
         public NumberOfOwners? NumberOfOwners { get; set; }

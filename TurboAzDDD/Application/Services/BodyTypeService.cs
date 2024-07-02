@@ -30,7 +30,7 @@ namespace Application.Services
             /// <param name="createDto"></param>
             /// <returns></returns>
             /// 
-            public async Task<int> CreateAsync(CreateBodyTypeDto createDto)
+            public async Task<bool> CreateAsync(CreateBodyTypeDto createDto)
             {
 
                 if (await _unitOfWork.BodyTypeRepository.IsExistAsync(b => b.BodyTypeName.Trim() == createDto.BodyTypeName.Trim()))
@@ -40,13 +40,13 @@ namespace Application.Services
 
                 await _unitOfWork.BodyTypeRepository.CreateAsync(mapped);
 
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
 
             }
 
-            public async Task<int> UpdateAsync(int id, UpdateBodyTypeDto updateDto)
+            public async Task<bool> UpdateAsync(int id, UpdateBodyTypeDto updateDto)
             {
-                BodyType? bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsyncForAll(id);
+                var bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsyncForAll(id);
 
 
                 if (bodyType is null) throw new EntityNotFoundException("There is no such BodyType");
@@ -56,40 +56,36 @@ namespace Application.Services
 
                 else
                 {
-                    var mapped = _mapper.Map(updateDto, bodyType);
+                    var mapped = _mapper.Map<BodyType>(updateDto);
                     await _unitOfWork.BodyTypeRepository.UpdateAsync(mapped);
-                    return await _unitOfWork.CompleteAsync();
+                    return await _unitOfWork.CompleteAsync() > 0;
                 }
 
             }
 
             public async Task<List<GetBodyTypeDto>> GetAllAsync()
             {
-                List<GetBodyTypeDto> getBodyTypeDtos = new();
+                var bodyTypes = await _unitOfWork.BodyTypeRepository.GetAllAsync();
 
-                List<BodyType> bodyTypes = await _unitOfWork.BodyTypeRepository.GetAllAsync();
-
-
-                var mapped = _mapper.Map(bodyTypes, getBodyTypeDtos);
+                var mapped = _mapper.Map<List<GetBodyTypeDto>>(bodyTypes);
                 return mapped;
 
             }
             public async Task<GetBodyTypeDto> GetOneAsync(int id)
             {
-                GetBodyTypeDto getBodyTypeDto = new();
 
-                BodyType? bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such BodyType");
+                var bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such BodyType");
 
-                var mapped = _mapper.Map(bodyType, getBodyTypeDto);
+                var mapped = _mapper.Map<GetBodyTypeDto>(bodyType);
                 return mapped;
             }
 
-            public async Task<int> DeleteAsync(int id)
+            public async Task<bool> DeleteAsync(int id)
             {
 
                 var bodyType = await _unitOfWork.BodyTypeRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such BodyType");
                 await _unitOfWork.BodyTypeRepository.DeleteAsync(bodyType);
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0 ;
 
             }
         }

@@ -18,7 +18,7 @@ namespace API.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateModel(int id, [FromForm] UpdateModelDto updateModelDto)
         {
-            if (await _modelService.UpdateAsync(id, updateModelDto) > 0) return Ok();
+            if (await _modelService.UpdateAsync(id, updateModelDto)) return Ok();
             else return BadRequest();
 
         }
@@ -27,7 +27,7 @@ namespace API.Controllers
         [Route("create")]
         public async Task<IActionResult> CreateModel([FromForm] CreateModelDto createModelDto)
         {
-            if (await _modelService.CreateAsync(createModelDto) > 0) return Ok();
+            if (await _modelService.CreateAsync(createModelDto)) return Ok();
             else return BadRequest();
 
         }
@@ -51,7 +51,7 @@ namespace API.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteModel(int id)
         {
-            if (await _modelService.DeleteAsync(id) > 0) return Ok();
+            if (await _modelService.DeleteAsync(id)) return Ok();
             else return BadRequest();
         }
     }

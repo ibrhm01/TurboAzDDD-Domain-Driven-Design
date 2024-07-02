@@ -8,6 +8,7 @@ using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Repositories;
 using Domain.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Application.Services
@@ -23,14 +24,15 @@ namespace Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="unitOfWork"></param>
-        public VehicleService(IUnitOfWork unitOfWork, IMapper mapper, IImageService ImageService)
+        public VehicleService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
         {
             _unitOfWork = unitOfWork;
-            _imageService = ImageService;
+            _imageService = imageService;
             _mapper = mapper;
         }
         /// <summary>
@@ -39,7 +41,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<bool> CreateAsync(CreateVehicleDto createDto, string webRootPath)
+        public async Task<bool> CreateAsync(CreateVehicleDto createDto)
         {
             if (!await _unitOfWork.BodyTypeRepository.IsExistAsync(v => v.Id == createDto.BodyTypeId))
                 throw new EntityNotFoundException("There is no such BodyType with this ID");
@@ -90,7 +92,7 @@ namespace Application.Services
                     CreateImageDto createImageDto = new();
                     createImageDto.VehicleId = mapped.Id;
                     createImageDto.Photo = photo;
-                    await _imageService.CreateAsync(createImageDto, webRootPath);
+                    await _imageService.CreateAsync(createImageDto);
                 }
             }
 
@@ -98,9 +100,10 @@ namespace Application.Services
 
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateVehicleDto updateDto, string webRootPath)
+        public async Task<bool> UpdateAsync(int id, UpdateVehicleDto updateDto)
         {
-            Vehicle? vehicle = await _unitOfWork.VehicleRepository.GetByIdAsyncForAll(id);
+            var vehicle = await _unitOfWork.VehicleRepository.GetByIdAsyncForAll(id);
+            if (vehicle is null) throw new EntityNotFoundException("There is no such Vehicle");
 
 
             if (!await _unitOfWork.BodyTypeRepository.IsExistAsync(v => v.Id == updateDto.BodyTypeId))
@@ -129,7 +132,6 @@ namespace Application.Services
                 throw new EntityNotFoundException("There is no such Color with this ID");
 
 
-            if (vehicle is null) throw new EntityNotFoundException("There is no such Vehicle");
 
             var mapped = _mapper.Map(updateDto, vehicle);
           
@@ -164,12 +166,12 @@ namespace Application.Services
                     {
                         if (vehicle.Images.Count > 0)
                         {
-                            await _imageService.UpdateAsync(vehicle.Images.FirstOrDefault().Id, updateImageDto, webRootPath);
+                            await _imageService.UpdateAsync(vehicle.Images.FirstOrDefault().Id, updateImageDto);
                         }
                     }
                     else
                     {
-                        await _imageService.CreateAsync(createImageDto, webRootPath);
+                        await _imageService.CreateAsync(createImageDto);
                     }
 
                 }
@@ -199,7 +201,7 @@ namespace Application.Services
             return mapped;
         }
 
-        public async Task<bool> DeleteAsync(int id, string WebRootPath)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var vehicle = await _unitOfWork.VehicleRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Vehicle");

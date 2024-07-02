@@ -1,14 +1,5 @@
-using Application.Exceptions;
-using Application.Services;
-using AutoMapper;
-using Domain;
 using Domain.DTOs.Color;
-using Domain.Entities;
-using Domain.Exceptions;
-using FluentAssertions;
-using Infrastructure.Mapper;
-using Moq;
-using UnitTests.Fixtures;
+
 
 namespace UnitTests.Services;
 
@@ -156,12 +147,15 @@ public class ColorServiceTest
         public async void CreateAsync_OnSuccess_ReturnsTrue()
         {
             //Arrange
-            var createColorDto = ColorsFixtures.CreateColorDto();
+            var createColorDto = new CreateColorDto() {ColorName = "Göy"};
             var mapped = _mapper.Map<Color>(createColorDto);
             
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == createColorDto.ColorName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.ColorRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
@@ -178,12 +172,15 @@ public class ColorServiceTest
         public async void CreateAsync_OnFailure_ReturnsFalse()
         {
             //Arrange
-            var createColorDto = ColorsFixtures.CreateColorDto();
+            var createColorDto = new CreateColorDto() {ColorName = "Göy"};
             var mapped = _mapper.Map<Color>(createColorDto);
             
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == createColorDto.ColorName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.ColorRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(0);
 
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
@@ -200,10 +197,10 @@ public class ColorServiceTest
         public async void CreateAsync_OnError_ThrowsDuplicateNameException()
         {
             //Arrange
-            var createColorDto = ColorsFixtures.CreateColorDto();
-            var mapped = _mapper.Map<Color>(createColorDto);
+            var createColorDto = new CreateColorDto() {ColorName = "Boz"};
             
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == createColorDto.ColorName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
             
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
@@ -218,14 +215,17 @@ public class ColorServiceTest
         public async void UpdateAsync_OnSuccess_ReturnsTrue(int id)
         {
             //Arrange
-            var updateColorDto = ColorsFixtures.UpdateColorDto();
+            var updateColorDto = new UpdateColorDto() {ColorName = "Göy", IsDeleted = false};
             var color = _colors.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateColorDto, color);
-            
+            var mapped = _mapper.Map<Color>(updateColorDto);
+
             _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id)).ReturnsAsync(color);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == updateColorDto.ColorName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.ColorRepository.UpdateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
@@ -245,14 +245,13 @@ public class ColorServiceTest
         public async void UpdateAsync_OnFailure_ReturnsFalse(int id)
         {
             //Arrange
-            var updateColorDto = ColorsFixtures.UpdateColorDto();
+            var updateColorDto = new UpdateColorDto() {ColorName = "Göy", IsDeleted = false};
             var color = _colors.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateColorDto, color);
-            
-            
+            var mapped = _mapper.Map<Color>(updateColorDto);
             
             _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id)).ReturnsAsync(color);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == updateColorDto.ColorName.Trim())).ReturnsAsync(false);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
             _mockUnitOfWork.Setup(u => u.ColorRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
             _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
             
@@ -274,11 +273,11 @@ public class ColorServiceTest
         public async void UpdateAsync_OnError_ThrowsEntityNotFoundException(int id)
         {
             //Arrange
-            var updateColorDto = ColorsFixtures.UpdateColorDto();
+            var updateColorDto = new UpdateColorDto() {ColorName = "Göy", IsDeleted = false};
             var color = _colors.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateColorDto, color);
             
-            _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id)).ReturnsAsync(color);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(color);
             
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
@@ -293,12 +292,14 @@ public class ColorServiceTest
         public async void UpdateAsync_OnError_ThrowsDuplicateNameException(int id)
         {
             //Arrange
-            var updateColorDto = ColorsFixtures.UpdateColorDto();
+            var updateColorDto = new UpdateColorDto() {ColorName = "Boz", IsDeleted = false};
             var color = _colors.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateColorDto, color);
             
-            _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id)).ReturnsAsync(color);
-            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(b => b.ColorName.Trim() == updateColorDto.ColorName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(color);
+            _mockUnitOfWork.Setup(u => u.ColorRepository.IsExistAsync(It.IsAny<Expression<Func<Color, bool>>>()))
+                .ReturnsAsync((Expression<Func<Color, bool>> predicate) => _colors.Any(predicate.Compile()));
+            
             var mockColorService = new ColorService(_mockUnitOfWork.Object, _mapper);
             
             // Act and  Assert

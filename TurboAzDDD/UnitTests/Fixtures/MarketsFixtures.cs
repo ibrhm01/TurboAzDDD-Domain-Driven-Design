@@ -31,41 +31,6 @@ namespace UnitTests.Fixtures
 
         };
 
-        public static CreateMarketDto CreateMarketDto() => new CreateMarketDto()
-        {
-            MarketName = "Amerika",
-        };
-        
-        public static UpdateMarketDto UpdateMarketDto() => new UpdateMarketDto()
-        {
-            MarketName = "Avropa",
-            IsDeleted = false
-        };
-
-
-        // public static List<GetMarketDto> GetAllMarketDtos() => new()
-        // {
-        //     new GetMarketDto()
-        //     {
-        //         MarketName ="Amerika",
-        //         IsDeleted = false,
-        //         // CreatedDate = DateTime.UtcNow
-        //     },
-        //
-        //    new GetMarketDto()
-        //     {
-        //         MarketName ="Dubay",
-        //         IsDeleted = false,
-        //         // CreatedDate = DateTime.UtcNow
-        //     },
-        //    new GetMarketDto()
-        //     {
-        //         MarketName ="Koreya",
-        //         IsDeleted = false,
-        //         // CreatedDate = DateTime.UtcNow
-        //     },
-        //
-        // };
     }
 }
 

@@ -1,20 +1,11 @@
-using Application.Exceptions;
-using Application.Services;
-using AutoMapper;
-using Domain;
 using Domain.DTOs.Transmission;
-using Domain.Entities;
-using Domain.Exceptions;
-using FluentAssertions;
-using Infrastructure.Mapper;
-using Moq;
-using UnitTests.Fixtures;
+
 
 namespace UnitTests.Services;
 
 public class TransmissionServiceTest
 {
-    private IMapper _mapper { get; set; }
+     private IMapper _mapper { get; set; }
         private Mock<IUnitOfWork> _mockUnitOfWork { get; set; }
         private List<Transmission> _transmissions { get; set; }
 
@@ -156,12 +147,15 @@ public class TransmissionServiceTest
         public async void CreateAsync_OnSuccess_ReturnsTrue()
         {
             //Arrange
-            var createTransmissionDto = TransmissionsFixtures.CreateTransmissionDto();
+            var createTransmissionDto = new CreateTransmissionDto() {TransmissionName = "Reduktor"};
             var mapped = _mapper.Map<Transmission>(createTransmissionDto);
             
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == createTransmissionDto.TransmissionName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
@@ -178,12 +172,15 @@ public class TransmissionServiceTest
         public async void CreateAsync_OnFailure_ReturnsFalse()
         {
             //Arrange
-            var createTransmissionDto = TransmissionsFixtures.CreateTransmissionDto();
+            var createTransmissionDto = new CreateTransmissionDto() {TransmissionName = "Reduktor"};
             var mapped = _mapper.Map<Transmission>(createTransmissionDto);
             
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == createTransmissionDto.TransmissionName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.CreateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.CreateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(0);
 
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
@@ -200,10 +197,10 @@ public class TransmissionServiceTest
         public async void CreateAsync_OnError_ThrowsDuplicateNameException()
         {
             //Arrange
-            var createTransmissionDto = TransmissionsFixtures.CreateTransmissionDto();
-            var mapped = _mapper.Map<Transmission>(createTransmissionDto);
+            var createTransmissionDto = new CreateTransmissionDto() {TransmissionName = "Robot"};
             
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == createTransmissionDto.TransmissionName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
             
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
@@ -218,14 +215,17 @@ public class TransmissionServiceTest
         public async void UpdateAsync_OnSuccess_ReturnsTrue(int id)
         {
             //Arrange
-            var updateTransmissionDto = TransmissionsFixtures.UpdateTransmissionDto();
+            var updateTransmissionDto = new UpdateTransmissionDto() {TransmissionName = "Reduktor", IsDeleted = false};
             var transmission = _transmissions.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateTransmissionDto, transmission);
-            
+            var mapped = _mapper.Map<Transmission>(updateTransmissionDto);
+
             _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id)).ReturnsAsync(transmission);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == updateTransmissionDto.TransmissionName.Trim())).ReturnsAsync(false);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
-            _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(1);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.UpdateAsync(mapped))
+                .Returns(Task.CompletedTask);
+            _mockUnitOfWork.Setup(u => u.CompleteAsync())
+                .ReturnsAsync(1);
 
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
@@ -245,14 +245,13 @@ public class TransmissionServiceTest
         public async void UpdateAsync_OnFailure_ReturnsFalse(int id)
         {
             //Arrange
-            var updateTransmissionDto = TransmissionsFixtures.UpdateTransmissionDto();
+            var updateTransmissionDto = new UpdateTransmissionDto() {TransmissionName = "Reduktor", IsDeleted = false};
             var transmission = _transmissions.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateTransmissionDto, transmission);
-            
-            
+            var mapped = _mapper.Map<Transmission>(updateTransmissionDto);
             
             _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id)).ReturnsAsync(transmission);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == updateTransmissionDto.TransmissionName.Trim())).ReturnsAsync(false);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
             _mockUnitOfWork.Setup(u => u.TransmissionRepository.UpdateAsync(mapped)).Returns(Task.CompletedTask);
             _mockUnitOfWork.Setup(u => u.CompleteAsync()).ReturnsAsync(0);
             
@@ -274,11 +273,11 @@ public class TransmissionServiceTest
         public async void UpdateAsync_OnError_ThrowsEntityNotFoundException(int id)
         {
             //Arrange
-            var updateTransmissionDto = TransmissionsFixtures.UpdateTransmissionDto();
+            var updateTransmissionDto = new UpdateTransmissionDto() {TransmissionName = "Reduktor", IsDeleted = false};
             var transmission = _transmissions.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateTransmissionDto, transmission);
             
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id)).ReturnsAsync(transmission);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(transmission);
             
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
@@ -293,12 +292,14 @@ public class TransmissionServiceTest
         public async void UpdateAsync_OnError_ThrowsDuplicateNameException(int id)
         {
             //Arrange
-            var updateTransmissionDto = TransmissionsFixtures.UpdateTransmissionDto();
+            var updateTransmissionDto = new UpdateTransmissionDto() {TransmissionName = "Robot", IsDeleted = false};
             var transmission = _transmissions.FirstOrDefault(m => m.Id == id);
-            var mapped = _mapper.Map(updateTransmissionDto, transmission);
             
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id)).ReturnsAsync(transmission);
-            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(b => b.TransmissionName.Trim() == updateTransmissionDto.TransmissionName.Trim())).ReturnsAsync(true);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.GetByIdAsyncForAll(id))
+                .ReturnsAsync(transmission);
+            _mockUnitOfWork.Setup(u => u.TransmissionRepository.IsExistAsync(It.IsAny<Expression<Func<Transmission, bool>>>()))
+                .ReturnsAsync((Expression<Func<Transmission, bool>> predicate) => _transmissions.Any(predicate.Compile()));
+            
             var mockTransmissionService = new TransmissionService(_mockUnitOfWork.Object, _mapper);
             
             // Act and  Assert

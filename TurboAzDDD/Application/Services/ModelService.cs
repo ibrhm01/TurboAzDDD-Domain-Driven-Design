@@ -34,7 +34,7 @@ namespace Application.Services
         /// <param name="createDto"></param>
         /// <returns></returns>
         /// 
-        public async Task<int> CreateAsync(CreateModelDto createDto)
+        public async Task<bool> CreateAsync(CreateModelDto createDto)
         {
 
             if (await _unitOfWork.BrandRepository.IsExistAsync(b => b.Id == createDto.BrandId))
@@ -43,67 +43,56 @@ namespace Application.Services
                     throw new DuplicateNameException("There is already a Model with this name");
 
                 var mapped = _mapper.Map<Model>(createDto);
-                //mapped.Brand = new Brand()
-                //{
-                //    BrandName = createDto.Brand.BrandName,
-                //    Id= createDto.Brand.Id,
-                //};
-
+              
                 await _unitOfWork.ModelRepository.CreateAsync(mapped);
 
-                return await _unitOfWork.CompleteAsync();
+                return await _unitOfWork.CompleteAsync() > 0;
 
+            } 
+            else throw new EntityNotFoundException("There is no such Brand with this ID");
+        }
+
+        public async Task<bool> UpdateAsync(int id, UpdateModelDto updateDto)
+        {
+            var model = await _unitOfWork.ModelRepository.GetByIdAsyncForAll(id);
+
+            if (model is null) throw new EntityNotFoundException("There is no such Model");
+            
+            if (await _unitOfWork.BrandRepository.IsExistAsync(b => b.Id == updateDto.BrandId))
+            {
+                 if (await _unitOfWork.ModelRepository.IsExistAsync(m => m.ModelName.Trim() == updateDto.ModelName.Trim()))
+                    throw new DuplicateNameException("There is already a Model with this name");
+
+                 var mapped = _mapper.Map<Model>(updateDto);
+                 await _unitOfWork.ModelRepository.UpdateAsync(mapped);
+                 return await _unitOfWork.CompleteAsync() > 0;
             }
             else throw new EntityNotFoundException("There is no such Brand with this ID");
         }
 
-        public async Task<int> UpdateAsync(int id, UpdateModelDto updateDto)
-        {
-            Model? model = await _unitOfWork.ModelRepository.GetByIdAsyncForAll(id);
-
-
-            if (model is null) throw new EntityNotFoundException("There is no such Model");
-
-            else if (await _unitOfWork.ModelRepository.IsExistAsync(b => b.ModelName.Trim() == updateDto.ModelName.Trim()))
-                throw new DuplicateNameException("There is already a Model with this name");
-
-            else
-            {
-                var mapped = _mapper.Map(updateDto, model);
-                await _unitOfWork.ModelRepository.UpdateAsync(mapped);
-                return await _unitOfWork.CompleteAsync();
-            }
-
-        }
-
         public async Task<List<GetModelDto>> GetAllAsync()
         {
-            List<GetModelDto> getModelDtos = new();
+            var models = await _unitOfWork.ModelRepository.GetAllAsync();
 
-            List<Model> models = await _unitOfWork.ModelRepository.GetAllAsync();
-
-
-            var mapped = _mapper.Map(models, getModelDtos);
+            var mapped = _mapper.Map<List<GetModelDto>>(models);
             return mapped;
 
         }
 
         public async Task<GetModelDto> GetOneAsync(int id)
         {
-            GetModelDto getModelDto = new();
+            var model = await _unitOfWork.ModelRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Model");
 
-            Model? model = await _unitOfWork.ModelRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Model");
-
-            var mapped = _mapper.Map(model, getModelDto);
+            var mapped = _mapper.Map<GetModelDto>(model);
             return mapped;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
 
             var model = await _unitOfWork.ModelRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such Model");
             await _unitOfWork.ModelRepository.DeleteAsync(model);
-            return await _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync() > 0;
 
         }
     }

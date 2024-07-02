@@ -46,7 +46,7 @@ namespace Application.Services
 
         public async Task<bool> UpdateAsync(int id, UpdateFuelTypeDto updateDto)
         {
-            FuelType? fuelType = await _unitOfWork.FuelTypeRepository.GetByIdAsyncForAll(id);
+            var fuelType = await _unitOfWork.FuelTypeRepository.GetByIdAsyncForAll(id);
 
 
             if (fuelType is null) throw new EntityNotFoundException("There is no such FuelType");
@@ -56,7 +56,7 @@ namespace Application.Services
 
             else
             {
-                var mapped = _mapper.Map(updateDto, fuelType);
+                var mapped = _mapper.Map<FuelType>(updateDto);
                 await _unitOfWork.FuelTypeRepository.UpdateAsync(mapped);
                 return await _unitOfWork.CompleteAsync() > 0;
             }
@@ -65,22 +65,17 @@ namespace Application.Services
 
         public async Task<List<GetFuelTypeDto>> GetAllAsync()
         {
-            List<GetFuelTypeDto> getFuelTypeDtos = new();
+            var fuelTypes = await _unitOfWork.FuelTypeRepository.GetAllAsync();
 
-            List<FuelType> fuelTypes = await _unitOfWork.FuelTypeRepository.GetAllAsync();
-
-
-            var mapped = _mapper.Map(fuelTypes, getFuelTypeDtos);
+            var mapped = _mapper.Map<List<GetFuelTypeDto>>(fuelTypes);
             return mapped;
 
         }
         public async Task<GetFuelTypeDto> GetOneAsync(int id)
         {
-            GetFuelTypeDto getFuelTypeDto = new();
+            var fuelType= await _unitOfWork.FuelTypeRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such FuelType");
 
-            FuelType? fuelType = await _unitOfWork.FuelTypeRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException("There is no such FuelType");
-
-            var mapped = _mapper.Map(fuelType, getFuelTypeDto);
+            var mapped = _mapper.Map<GetFuelTypeDto>(fuelType);
             return mapped;
 
         }
